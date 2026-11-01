@@ -1,0 +1,133 @@
+/* Keyframe Animations */
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(2deg);
+  }
+}
+
+@keyframes floatMedium {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-22px) rotate(-3deg);
+  }
+}
+
+@keyframes floatSlight {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes ribbonSway {
+  0%, 100% {
+    transform: rotate(0deg) skewX(0deg);
+  }
+  50% {
+    transform: rotate(4deg) skewX(2deg);
+  }
+}
+
+@keyframes goldShimmer {
+  0% {
+    transform: translateX(-150%) skewX(-25deg);
+  }
+  50%, 100% {
+    transform: translateX(250%) skewX(-25deg);
+  }
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.7) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25) rotate(90deg);
+    filter: drop-shadow(0 0 8px rgba(255, 235, 170, 0.9));
+  }
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.22);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes pulseGoldGlow {
+  0%, 100% {
+    box-shadow: 0 10px 25px rgba(214, 173, 104, 0.35), 0 0 15px rgba(214, 173, 104, 0.2);
+  }
+  50% {
+    box-shadow: 0 15px 35px rgba(214, 173, 104, 0.6), 0 0 30px rgba(214, 173, 104, 0.4);
+  }
+}
+
+@keyframes revealFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes revealScaleUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes flameFlicker {
+  0%, 100% {
+    transform: scale(1) skewX(0deg);
+    opacity: 0.95;
+  }
+  25% {
+    transform: scale(1.08, 0.94) skewX(-2deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.95, 1.05) skewX(3deg);
+    opacity: 0.9;
+  }
+  75% {
+    transform: scale(1.04, 0.97) skewX(-1deg);
+    opacity: 1;
+  }
+}
+
+@keyframes gentleRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
