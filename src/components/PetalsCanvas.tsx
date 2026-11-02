@@ -1,226 +1,308 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-type ParticleType = 'pinkPetal' | 'whitePetal' | 'goldStar' | 'goldSparkle' | 'goldParticle';
+// ========================================================
+// FALL_CONFIG: Easily tweak particle counts across devices
+// ========================================================
+export const FALL_CONFIG = {
+  mobile:  { petals: 18, flowers: 6, stars: 22 },
+  desktop: { petals: 26, flowers: 9, stars: 34 },
+};
 
-interface Particle {
-  type: ParticleType;
-  x: number;
-  y: number;
+interface ParticleItem {
+  id: string;
+  symbolId: string;
   size: number;
-  speedY: number;
-  speedX: number;
-  wobbleSpeed: number;
-  wobbleAngle: number;
-  rotation: number;
-  rotSpeed: number;
-  tilt: number;
-  tiltSpeed: number;
+  left: number;
+  duration: number;
+  delay: number;
   opacity: number;
-  alphaSpeed: number;
-  spikes?: number;
+  animName: string;
 }
 
 interface PetalsCanvasProps {
-  layer?: 'back' | 'front';
+  section?: 'cover' | 'wishes' | 'cake' | 'global';
 }
 
-export const PetalsCanvas: React.FC<PetalsCanvasProps> = ({ layer = 'back' }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+export const PetalsCanvas: React.FC<PetalsCanvasProps> = ({ section = 'wishes' }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(true);
+  const [isLowEnd, setIsLowEnd] = useState<boolean>(false);
+  const [fpsThrottled, setFpsThrottled] = useState<boolean>(false);
+  const [isOffscreen, setIsOffscreen] = useState<boolean>(false);
+  const [isDocHidden, setIsDocHidden] = useState<boolean>(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false);
 
+  // 1. Device and preference detection
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (typeof window === 'undefined') return;
 
-    // Accessibility check: reduced motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+    // Reduced motion check
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mql.matches);
+    const handleMotionChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mql.addEventListener('change', handleMotionChange);
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    // Screen size detection
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile, { passive: true });
 
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize, { passive: true });
+    // Hardware capability detection: cores <= 4 or RAM <= 2GB
+    const nav = navigator as any;
+    const lowCores = nav.hardwareConcurrency && nav.hardwareConcurrency <= 4;
+    const lowMemory = nav.deviceMemory && nav.deviceMemory <= 2;
+    if (lowCores || lowMemory) {
+      setIsLowEnd(true);
+    }
 
-    const isFront = layer === 'front';
-
-    // Particle distribution:
-    // Back layer: 20 particles (subtle, background depth)
-    // Front layer: 16 particles (crisp, foreground drift over cards & text)
-    const count = isFront ? 16 : 20;
-    const types: ParticleType[] = ['pinkPetal', 'whitePetal', 'goldStar', 'goldSparkle', 'goldParticle'];
-
-    const particles: Particle[] = Array.from({ length: count }, (_, i) => {
-      const type = types[i % types.length];
-      const baseSize = isFront ? 1.15 : 0.85;
-
-      return {
-        type,
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size:
-          type === 'pinkPetal'
-            ? (Math.random() * 6 + 10) * baseSize
-            : type === 'whitePetal'
-            ? (Math.random() * 5 + 8) * baseSize
-            : type === 'goldStar'
-            ? (Math.random() * 4 + 7) * baseSize
-            : type === 'goldSparkle'
-            ? (Math.random() * 3 + 5) * baseSize
-            : (Math.random() * 2 + 1.8) * baseSize,
-        speedY: (Math.random() * 0.45 + (isFront ? 0.35 : 0.22)),
-        speedX: (Math.random() - 0.5) * 0.25,
-        wobbleSpeed: Math.random() * 0.02 + 0.008,
-        wobbleAngle: Math.random() * Math.PI * 2,
-        rotation: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.02,
-        tilt: Math.random() * Math.PI,
-        tiltSpeed: Math.random() * 0.015 + 0.008,
-        opacity: isFront ? Math.random() * 0.35 + 0.6 : Math.random() * 0.25 + 0.3,
-        alphaSpeed: (Math.random() * 0.01 + 0.004) * (Math.random() < 0.5 ? 1 : -1),
-        spikes: Math.random() < 0.6 ? 4 : 5,
-      };
-    });
-
-    let animId: number;
-    let isPaused = false;
-
-    const handleVisibility = () => {
-      isPaused = document.hidden;
-    };
+    // Visibility detection (pause when tab hidden or phone locked)
+    const handleVisibility = () => setIsDocHidden(document.hidden);
     document.addEventListener('visibilitychange', handleVisibility);
 
-    // Helpers to draw geometric shapes
-    const drawStar = (cx: number, cy: number, spikes: number, outerRadius: number, innerRadius: number) => {
-      let rot = (Math.PI / 2) * 3;
-      let x = cx;
-      let y = cy;
-      const step = Math.PI / spikes;
-
-      ctx.beginPath();
-      ctx.moveTo(cx, cy - outerRadius);
-      for (let i = 0; i < spikes; i++) {
-        x = cx + Math.cos(rot) * outerRadius;
-        y = cy + Math.sin(rot) * outerRadius;
-        ctx.lineTo(x, y);
-        rot += step;
-
-        x = cx + Math.cos(rot) * innerRadius;
-        y = cy + Math.sin(rot) * innerRadius;
-        ctx.lineTo(x, y);
-        rot += step;
-      }
-      ctx.lineTo(cx, cy - outerRadius);
-      ctx.closePath();
-    };
-
-    const drawPetal = (size: number, isPink: boolean) => {
-      const grad = ctx.createRadialGradient(0, -size * 0.2, 0, 0, 0, size);
-      if (isPink) {
-        grad.addColorStop(0, '#FFF5F2');
-        grad.addColorStop(0.45, '#F4CFC6');
-        grad.addColorStop(1, '#E3A3A0');
-      } else {
-        grad.addColorStop(0, '#FFFFFF');
-        grad.addColorStop(0.5, '#FFF9F4');
-        grad.addColorStop(1, '#EDE2D8');
-      }
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.moveTo(0, -size * 0.7);
-      ctx.bezierCurveTo(size * 0.75, -size * 0.55, size * 0.8, size * 0.5, 0, size * 0.85);
-      ctx.bezierCurveTo(-size * 0.8, size * 0.5, -size * 0.75, -size * 0.55, 0, -size * 0.7);
-      ctx.closePath();
-      ctx.fill();
-    };
-
-    const render = () => {
-      if (!isPaused) {
-        ctx.clearRect(0, 0, width, height);
-
-        particles.forEach((p) => {
-          // Physics update: continuous downward drift
-          p.wobbleAngle += p.wobbleSpeed;
-          p.x += Math.sin(p.wobbleAngle) * 0.65 + p.speedX;
-          p.y += p.speedY;
-          p.rotation += p.rotSpeed;
-          p.tilt += p.tiltSpeed;
-
-          // Sparkle twinkle
-          if (p.type === 'goldSparkle' || p.type === 'goldStar') {
-            p.opacity += p.alphaSpeed;
-            const maxAlpha = isFront ? 0.95 : 0.65;
-            const minAlpha = isFront ? 0.4 : 0.2;
-            if (p.opacity > maxAlpha || p.opacity < minAlpha) {
-              p.alphaSpeed = -p.alphaSpeed;
-            }
-          }
-
-          // Recycling loop (seamless cross-section continuous fall)
-          if (p.y > height + 30) {
-            p.y = -30;
-            p.x = Math.random() * width;
-          }
-
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.rotation);
-          ctx.globalAlpha = Math.max(0.1, Math.min(1, p.opacity));
-
-          if (p.type === 'pinkPetal' || p.type === 'whitePetal') {
-            // 3D tumbling perspective scale
-            ctx.scale(Math.cos(p.tilt) * 0.65 + 0.35, 1);
-            drawPetal(p.size, p.type === 'pinkPetal');
-          } else if (p.type === 'goldStar') {
-            // Golden 4 or 5-point star
-            const starGrad = ctx.createLinearGradient(-p.size, -p.size, p.size, p.size);
-            starGrad.addColorStop(0, '#FFFCE8');
-            starGrad.addColorStop(0.5, '#E9D08F');
-            starGrad.addColorStop(1, '#C9A24D');
-            ctx.fillStyle = starGrad;
-            drawStar(0, 0, p.spikes || 4, p.size, p.size * 0.36);
-            ctx.fill();
-          } else if (p.type === 'goldSparkle') {
-            // 4-point diamond sparkle
-            ctx.fillStyle = '#FFEAA7';
-            drawStar(0, 0, 4, p.size, p.size * 0.18);
-            ctx.fill();
-          } else {
-            // Small gold dust particle
-            ctx.fillStyle = '#F5DE98';
-            ctx.beginPath();
-            ctx.arc(0, 0, p.size, 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          ctx.restore();
-        });
-      }
-
-      animId = requestAnimationFrame(render);
-    };
-
-    render();
-
     return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener('resize', handleResize);
+      mql.removeEventListener('change', handleMotionChange);
+      window.removeEventListener('resize', checkMobile);
       document.removeEventListener('visibilitychange', handleVisibility);
     };
-  }, [layer]);
+  }, []);
+
+  // 2. FPS Watchdog: Auto-reduce particles if FPS < 45 over 2 seconds
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    let frameCount = 0;
+    let startTime = performance.now();
+    let animId: number;
+    let lowFpsStreak = 0;
+
+    const measureFps = (now: number) => {
+      frameCount++;
+      const elapsed = now - startTime;
+
+      if (elapsed >= 1000) {
+        const currentFps = (frameCount * 1000) / elapsed;
+        frameCount = 0;
+        startTime = now;
+
+        if (currentFps < 45) {
+          lowFpsStreak++;
+          if (lowFpsStreak >= 2) {
+            setFpsThrottled(true);
+          }
+        } else {
+          lowFpsStreak = 0;
+        }
+      }
+
+      animId = requestAnimationFrame(measureFps);
+    };
+
+    animId = requestAnimationFrame(measureFps);
+    return () => cancelAnimationFrame(animId);
+  }, [prefersReducedMotion]);
+
+  // 3. IntersectionObserver: Pause particles when section is offscreen
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setIsOffscreen(!entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // 4. Compute Particle Counts
+  const particles = useMemo(() => {
+    if (prefersReducedMotion) return [];
+
+    const base = isMobile ? FALL_CONFIG.mobile : FALL_CONFIG.desktop;
+
+    // Scale factors:
+    // Cover is lighter (60%) so card art stays clean
+    // Low-end device: 60%
+    // FPS throttled: 60% (-40%)
+    const sectionFactor = section === 'cover' ? 0.6 : 1.0;
+    const deviceFactor = isLowEnd ? 0.6 : 1.0;
+    const perfFactor = fpsThrottled ? 0.6 : 1.0;
+    const totalScale = sectionFactor * deviceFactor * perfFactor;
+
+    const petalCount = Math.max(3, Math.round(base.petals * totalScale));
+    const flowerCount = Math.max(1, Math.round(base.flowers * totalScale));
+    const starCount = Math.max(4, Math.round(base.stars * totalScale));
+
+    const list: ParticleItem[] = [];
+
+    // Helper for pseudo-random deterministic seeding
+    let seed = section.charCodeAt(0) * 17 + (isMobile ? 11 : 29);
+    const nextRandom = () => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+
+    // A. Petals
+    for (let i = 0; i < petalCount; i++) {
+      const duration = 9 + nextRandom() * 9; // 9s to 18s fall
+      const delay = -(nextRandom() * duration); // Staggered negative delay so screen starts populated
+      const size = 12 + nextRandom() * 9; // 12-21px
+      const left = Math.round(nextRandom() * 96);
+      const opacity = 0.4 + nextRandom() * 0.35; // 0.4 - 0.75
+      const animName = nextRandom() > 0.5 ? 'fallSwayA' : 'fallSwayB';
+
+      list.push({
+        id: `p-${section}-${i}`,
+        symbolId: 'symbol-blush-petal',
+        size,
+        left,
+        duration: Math.round(duration * 10) / 10,
+        delay: Math.round(delay * 10) / 10,
+        opacity: Math.round(opacity * 100) / 100,
+        animName,
+      });
+    }
+
+    // B. Tiny 5-Petal Blush Flowers (~14-22px)
+    for (let i = 0; i < flowerCount; i++) {
+      const duration = 10 + nextRandom() * 8; // 10s to 18s
+      const delay = -(nextRandom() * duration);
+      const size = 14 + nextRandom() * 8; // 14-22px
+      const left = Math.round(nextRandom() * 94);
+      const opacity = 0.45 + nextRandom() * 0.32; // 0.45 - 0.77
+      const animName = nextRandom() > 0.5 ? 'fallSwayA' : 'fallSwayB';
+
+      list.push({
+        id: `f-${section}-${i}`,
+        symbolId: 'symbol-blossom-flower',
+        size,
+        left,
+        duration: Math.round(duration * 10) / 10,
+        delay: Math.round(delay * 10) / 10,
+        opacity: Math.round(opacity * 100) / 100,
+        animName,
+      });
+    }
+
+    // C. 4-point Stars & Sparkles (gold and light gold, ~8-14px)
+    for (let i = 0; i < starCount; i++) {
+      const duration = 8.5 + nextRandom() * 9.5; // 8.5s to 18s
+      const delay = -(nextRandom() * duration);
+      const size = 8 + nextRandom() * 6; // 8-14px
+      const left = Math.round(nextRandom() * 96);
+      const opacity = 0.4 + nextRandom() * 0.38; // 0.4 - 0.78
+      const symbolId = nextRandom() > 0.45 ? 'symbol-star-gold' : 'symbol-star-light-gold';
+
+      list.push({
+        id: `s-${section}-${i}`,
+        symbolId,
+        size,
+        left,
+        duration: Math.round(duration * 10) / 10,
+        delay: Math.round(delay * 10) / 10,
+        opacity: Math.round(opacity * 100) / 100,
+        animName: 'fallStarDrift',
+      });
+    }
+
+    return list;
+  }, [section, isMobile, isLowEnd, fpsThrottled, prefersReducedMotion]);
+
+  if (prefersReducedMotion) return null;
+
+  const isPaused = isDocHidden || isOffscreen;
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={`fixed inset-0 pointer-events-none w-full h-full ${
-        layer === 'front' ? 'z-25' : 'z-1'
-      }`}
+    <div
+      ref={containerRef}
+      className="absolute inset-0 pointer-events-none z-[1] overflow-hidden select-none"
       aria-hidden="true"
-    />
+    >
+      {/* Reusable SVG Definitions via <use> */}
+      <svg className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+        <defs>
+          {/* Rose Petal Gradient */}
+          <radialGradient id="rose-petal-grad" cx="50%" cy="30%" r="70%">
+            <stop offset="0%" stopColor="#FFF9F5" />
+            <stop offset="50%" stopColor="#F4CFC6" />
+            <stop offset="100%" stopColor="#E3A3A0" />
+          </radialGradient>
+
+          {/* Gold Star Gradient */}
+          <linearGradient id="gold-star-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFF8D6" />
+            <stop offset="50%" stopColor="#E9D08F" />
+            <stop offset="100%" stopColor="#C9A24D" />
+          </linearGradient>
+
+          {/* Light Gold Star Gradient */}
+          <linearGradient id="light-gold-star-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="50%" stopColor="#FFF2CC" />
+            <stop offset="100%" stopColor="#E9D08F" />
+          </linearGradient>
+
+          {/* 1. Petal Symbol */}
+          <g id="symbol-blush-petal" viewBox="0 0 24 24">
+            <path
+              d="M12 2 C18 4 19 16 12 22 C5 16 6 4 12 2 Z"
+              fill="url(#rose-petal-grad)"
+            />
+          </g>
+
+          {/* 2. 5-Petal Blush Blossom Symbol */}
+          <g id="symbol-blossom-flower" viewBox="0 0 24 24">
+            <path d="M12 2 C13.5 2 15 5 15 8 C15 10 13.5 11 12 11 C10.5 11 9 10 9 8 C9 5 10.5 2 12 2 Z" fill="url(#rose-petal-grad)" />
+            <path d="M12 2 C13.5 2 15 5 15 8 C15 10 13.5 11 12 11 C10.5 11 9 10 9 8 C9 5 10.5 2 12 2 Z" transform="rotate(72 12 12)" fill="url(#rose-petal-grad)" />
+            <path d="M12 2 C13.5 2 15 5 15 8 C15 10 13.5 11 12 11 C10.5 11 9 10 9 8 C9 5 10.5 2 12 2 Z" transform="rotate(144 12 12)" fill="url(#rose-petal-grad)" />
+            <path d="M12 2 C13.5 2 15 5 15 8 C15 10 13.5 11 12 11 C10.5 11 9 10 9 8 C9 5 10.5 2 12 2 Z" transform="rotate(216 12 12)" fill="url(#rose-petal-grad)" />
+            <path d="M12 2 C13.5 2 15 5 15 8 C15 10 13.5 11 12 11 C10.5 11 9 10 9 8 C9 5 10.5 2 12 2 Z" transform="rotate(288 12 12)" fill="url(#rose-petal-grad)" />
+            {/* Center golden pistil */}
+            <circle cx="12" cy="12" r="2.2" fill="#E9D08F" />
+            <circle cx="12" cy="12" r="1.1" fill="#C9A24D" />
+          </g>
+
+          {/* 3. 4-point Star Symbol (Gold) */}
+          <g id="symbol-star-gold" viewBox="0 0 24 24">
+            <path
+              d="M12 0 C12 6.5 17.5 12 24 12 C17.5 12 12 17.5 12 24 C12 17.5 6.5 12 0 12 C6.5 12 12 6.5 12 0 Z"
+              fill="url(#gold-star-grad)"
+            />
+          </g>
+
+          {/* 4. 4-point Star Symbol (Light Gold) */}
+          <g id="symbol-star-light-gold" viewBox="0 0 24 24">
+            <path
+              d="M12 0 C12 6.5 17.5 12 24 12 C17.5 12 12 17.5 12 24 C12 17.5 6.5 12 0 12 C6.5 12 12 6.5 12 0 Z"
+              fill="url(#light-gold-star-grad)"
+            />
+          </g>
+        </defs>
+      </svg>
+
+      {/* Render Particles */}
+      {particles.map((p) => (
+        <svg
+          key={p.id}
+          className="absolute particle-animated"
+          style={{
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            left: `${p.left}%`,
+            top: 0,
+            animation: `${p.animName} ${p.duration}s ${p.delay}s infinite linear`,
+            animationPlayState: isPaused ? 'paused' : 'running',
+            opacity: p.opacity,
+            ['--target-opacity' as any]: p.opacity,
+          }}
+        >
+          <use href={`#${p.symbolId}`} />
+        </svg>
+      ))}
+    </div>
   );
 };

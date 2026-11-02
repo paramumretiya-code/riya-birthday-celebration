@@ -1,0 +1,16 @@
+
+    <svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+      <rect width="180" height="180" rx="40" fill="#F7EDE0"/>
+      <circle cx="90" cy="90" r="70" fill="#FFF9F2" stroke="#E9D08F" stroke-width="4"/>
+      <!-- Gold Heart -->
+      <path d="M90 128 C60 105 45 85 45 66 C45 50 58 38 74 38 C83 38 90 44 90 44 C90 44 97 38 106 38 C122 38 135 50 135 66 C135 85 120 105 90 128 Z" fill="url(#gold)"/>
+      <defs>
+        <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FFF6D6"/>
+          <stop offset="35%" stop-color="#E9D08F"/>
+          <stop offset="70%" stop-color="#C9A24D"/>
+          <stop offset="100%" stop-color="#9C7424"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  

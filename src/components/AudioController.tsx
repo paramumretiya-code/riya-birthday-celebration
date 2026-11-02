@@ -9,6 +9,7 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
   const [isAvailable, setIsAvailable] = useState<boolean>(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fadeIntervalRef = useRef<number | null>(null);
+  const wasPlayingRef = useRef<boolean>(false);
 
   useEffect(() => {
     // Official track: BIRTHDAY WISH – HR71DP
@@ -88,8 +89,27 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
     (window as any).__playBirthdayMusic = playWithFade;
     (window as any).__pauseBirthdayMusic = pauseWithFade;
 
+    // Handle background / phone lock & resume
+    const handleVisibility = () => {
+      if (!audioRef.current) return;
+      if (document.hidden) {
+        if (audioRef.current && !audioRef.current.paused) {
+          wasPlayingRef.current = true;
+          audioRef.current.pause();
+          setIsPlaying(false);
+        }
+      } else {
+        if (wasPlayingRef.current) {
+          wasPlayingRef.current = false;
+          playWithFade();
+        }
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
     return () => {
       if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+      document.removeEventListener('visibilitychange', handleVisibility);
       if (audioRef.current) {
         audioRef.current.pause();
       }
@@ -112,14 +132,14 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
       onClick={toggleMusic}
       title={isPlaying ? "Pause: HR71DP – BIRTHDAY WISH" : "Play: HR71DP – BIRTHDAY WISH"}
       aria-label="Toggle Birthday Music: HR71DP – BIRTHDAY WISH"
-      className="fixed top-4 right-4 z-50 flex items-center justify-center w-11 h-11 rounded-full bg-white/85 backdrop-blur-md border border-[#C9A24D]/40 shadow-[0_4px_16px_rgba(201,162,77,0.22)] active:scale-95 transition-all text-[#9C7424] cursor-pointer"
+      className="fixed z-50 flex items-center justify-center w-12 h-12 min-h-[48px] min-w-[48px] rounded-full bg-white/90 backdrop-blur-sm border border-[#C9A24D]/40 shadow-[0_4px_16px_rgba(201,162,77,0.22)] active:scale-[0.97] transition-transform text-[#9C7424] cursor-pointer"
       style={{
         top: 'calc(14px + env(safe-area-inset-top, 0px))',
         right: 'calc(14px + env(safe-area-inset-right, 0px))',
       }}
     >
       {isPlaying ? (
-        <div className="flex items-end gap-[2px] h-[14px]">
+        <div className="flex items-end gap-[2.5px] h-[15px]">
           <span className="w-[2.5px] bg-[#9C7424] rounded-full animate-[pulse_0.8s_infinite_alternate]" style={{ height: '60%' }} />
           <span className="w-[2.5px] bg-[#C9A24D] rounded-full animate-[pulse_1.1s_0.2s_infinite_alternate]" style={{ height: '100%' }} />
           <span className="w-[2.5px] bg-[#9C7424] rounded-full animate-[pulse_0.7s_0.1s_infinite_alternate]" style={{ height: '40%' }} />

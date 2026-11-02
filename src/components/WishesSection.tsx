@@ -1,5 +1,6 @@
 import React from 'react';
 import { CrownIcon, DownArrowIcon, ButterflySVG, SparkleIcon } from './SVGIcons';
+import { PetalsCanvas } from './PetalsCanvas';
 
 export const WishesSection: React.FC = () => {
   const scrollToCake = () => {
@@ -15,8 +16,11 @@ export const WishesSection: React.FC = () => {
   return (
     <section
       id="wishes-section"
-      className="relative min-h-[100svh] w-full flex flex-col items-center justify-between py-12 px-5 max-w-[480px] mx-auto overflow-hidden"
+      className="relative min-h-[100vh] min-h-[100dvh] min-h-[100svh] w-full flex flex-col items-center justify-between py-12 px-5 max-w-[480px] mx-auto overflow-hidden"
     >
+      {/* Falling Flowers & Stars Animation (100% count, behind text) */}
+      <PetalsCanvas section="wishes" />
+
       {/* Subtle Background Floating Butterflies in Margins */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         <div className="absolute top-[10%] -left-3 opacity-45 animate-[softFloat_5s_infinite]">
@@ -30,24 +34,24 @@ export const WishesSection: React.FC = () => {
         </div>
       </div>
 
-      {/* SECTION HEADER: Replaced with "A SPECIAL BIRTHDAY WISH FOR YOU" */}
-      <header className="w-full text-center flex flex-col items-center z-10 mb-8 pt-2">
+      {/* SECTION HEADER: "A SPECIAL BIRTHDAY WISH FOR YOU" */}
+      <header className="relative z-10 w-full text-center flex flex-col items-center mb-8 pt-2 select-none">
         <span className="font-['Jost'] text-[11px] sm:text-[12px] uppercase tracking-[0.28em] text-[#9C7424] font-semibold mb-1">
           A SPECIAL BIRTHDAY WISH FOR YOU
         </span>
-        <h2 className="font-['Great_Vibes'] text-[48px] sm:text-[54px] leading-[1.1] gold-3d-text animate-gold-pulse">
+        <h2 className="font-['Great_Vibes'] fluid-greeting leading-[1.1] gold-3d-text animate-gold-pulse">
           Dear Riya,
         </h2>
       </header>
 
       {/* WISHES WRITTEN DIRECTLY ON BACKGROUND (NO BOXES OR CARDS) */}
-      <div className="w-full flex flex-col items-center text-center z-10 space-y-7">
+      <div className="relative z-10 w-full flex flex-col items-center text-center space-y-7">
         
         {/* PART 1: PERSONAL WISHES FROM COUSIN / FAMILY */}
         <div className="w-full space-y-6">
           {/* Wish Line 1 */}
           <div className="relative px-2">
-            <p className="font-['Cormorant_Garamond'] text-[20px] sm:text-[22px] leading-[1.65] font-medium embossed-text-3d">
+            <p className="font-['Cormorant_Garamond'] fluid-wishes-body font-medium embossed-text-3d">
               Wishing you a day filled with{' '}
               <span className="gold-3d-text font-bold">happiness</span>,{' '}
               <span className="gold-3d-text font-bold">love</span> and all the little moments that make life beautiful.
@@ -63,7 +67,7 @@ export const WishesSection: React.FC = () => {
 
           {/* Wish Line 2 */}
           <div className="relative px-2">
-            <p className="font-['Cormorant_Garamond'] text-[20px] sm:text-[22px] leading-[1.65] font-medium embossed-text-3d">
+            <p className="font-['Cormorant_Garamond'] fluid-wishes-body font-medium embossed-text-3d">
               May every new day bring you wonderful{' '}
               <span className="gold-3d-text font-bold">opportunities</span>,{' '}
               <span className="gold-3d-text font-bold">success</span> and moments that make your life more beautiful.
@@ -79,7 +83,7 @@ export const WishesSection: React.FC = () => {
 
           {/* Wish Line 3 */}
           <div className="relative px-2">
-            <p className="font-['Cormorant_Garamond'] text-[20px] sm:text-[22px] leading-[1.65] font-medium embossed-text-3d">
+            <p className="font-['Cormorant_Garamond'] fluid-wishes-body font-medium embossed-text-3d">
               Keep <span className="gold-3d-text font-bold">smiling</span>, keep{' '}
               <span className="gold-3d-text font-bold">growing</span> and keep{' '}
               <span className="gold-3d-text font-bold">shining ✨</span>
@@ -88,7 +92,7 @@ export const WishesSection: React.FC = () => {
 
           {/* Finale Line */}
           <div className="pt-2">
-            <p className="font-['Great_Vibes'] text-[36px] sm:text-[42px] leading-[1.2] gold-3d-title">
+            <p className="font-['Great_Vibes'] fluid-wishes-script gold-3d-title">
               Wishing you a truly wonderful birthday!
             </p>
           </div>
@@ -106,10 +110,10 @@ export const WishesSection: React.FC = () => {
           <span className="font-['Jost'] text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#9C7424] font-semibold mb-1">
             SPIRITUAL PRAYER & GRACE
           </span>
-          <h3 className="font-['Cormorant_Garamond'] font-bold text-[30px] sm:text-[34px] gold-3d-title mb-3">
+          <h3 className="font-['Cormorant_Garamond'] font-bold fluid-blessing-title gold-3d-title mb-3">
             God's Blessings
           </h3>
-          <p className="font-['Cormorant_Garamond'] text-[19px] sm:text-[21px] leading-[1.7] font-medium embossed-text-3d max-w-[420px]">
+          <p className="font-['Cormorant_Garamond'] fluid-wishes-body font-medium embossed-text-3d max-w-[420px]">
             May God bless you with <span className="gold-3d-text font-bold">happiness</span>,{' '}
             <span className="gold-3d-text font-bold">good health</span>,{' '}
             <span className="gold-3d-text font-bold">peace</span> and{' '}
@@ -121,10 +125,10 @@ export const WishesSection: React.FC = () => {
       </div>
 
       {/* BOTTOM ACTIONS */}
-      <footer className="w-full flex flex-col items-center pt-10 z-10 gap-3">
+      <footer className="relative z-10 w-full flex flex-col items-center pt-10 gap-3">
         <button
           onClick={scrollToCake}
-          className="relative group overflow-hidden w-full max-w-[320px] h-14 rounded-full bg-gradient-to-r from-[#F5E5B8] via-[#C9A24D] to-[#9C7424] text-[#3B2A25] font-['Jost'] font-bold text-[14px] uppercase tracking-[0.14em] shadow-[0_8px_25px_rgba(201,162,77,0.38)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+          className="relative group overflow-hidden w-full max-w-[320px] min-h-[48px] h-14 rounded-full bg-gradient-to-r from-[#F5E5B8] via-[#C9A24D] to-[#9C7424] text-[#3B2A25] font-['Jost'] font-bold text-[14px] uppercase tracking-[0.14em] shadow-[0_8px_25px_rgba(201,162,77,0.38)] active:scale-[0.97] transition-transform flex items-center justify-center gap-2 cursor-pointer select-none"
         >
           <div
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full animate-sheen pointer-events-none"
@@ -136,7 +140,7 @@ export const WishesSection: React.FC = () => {
 
         <button
           onClick={scrollToCover}
-          className="text-[12px] font-['Jost'] text-[#9C7424] uppercase tracking-[0.18em] hover:text-[#C9A24D] transition-colors py-1 focus:outline-none cursor-pointer"
+          className="min-h-[48px] h-12 px-6 flex items-center justify-center text-[12px] font-['Jost'] text-[#9C7424] uppercase tracking-[0.18em] hover:text-[#C9A24D] active:scale-[0.97] transition-all focus:outline-none cursor-pointer select-none"
         >
           ↑ Back to cover
         </button>

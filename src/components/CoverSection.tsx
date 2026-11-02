@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
 import { ButterflySVG, SparkleIcon } from './SVGIcons';
+import { PetalsCanvas } from './PetalsCanvas';
 
 export const CoverSection: React.FC = () => {
   const [isOpened, setIsOpened] = useState(false);
@@ -11,10 +12,13 @@ export const CoverSection: React.FC = () => {
     // 1. Play Background Music (iOS requirement satisfied on user interaction)
     (window as any).__playBirthdayMusic?.();
 
-    // 2. Gold + Blush Confetti Burst
+    // 2. Mobile-scaled Confetti Burst (useWorker: true, disableForReducedMotion: true)
     try {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const count = isMobile ? 44 : 80;
+
       confetti({
-        particleCount: 80,
+        particleCount: count,
         spread: 70,
         origin: { y: 0.8 },
         colors: ['#E9D08F', '#C9A24D', '#F4CFC6', '#E3A3A0', '#FBF4EA'],
@@ -22,19 +26,22 @@ export const CoverSection: React.FC = () => {
       });
 
       setTimeout(() => {
+        const sideCount = isMobile ? 26 : 50;
         confetti({
-          particleCount: 50,
+          particleCount: sideCount,
           angle: 60,
           spread: 55,
           origin: { x: 0, y: 0.85 },
           colors: ['#E9D08F', '#C9A24D', '#F4CFC6'],
+          disableForReducedMotion: true,
         });
         confetti({
-          particleCount: 50,
+          particleCount: sideCount,
           angle: 120,
           spread: 55,
           origin: { x: 1, y: 0.85 },
           colors: ['#E9D08F', '#C9A24D', '#F4CFC6'],
+          disableForReducedMotion: true,
         });
       }, 250);
     } catch (e) {
@@ -53,39 +60,45 @@ export const CoverSection: React.FC = () => {
   return (
     <section
       id="cover-section"
-      className="relative min-h-[100svh] w-full flex flex-col items-center justify-between py-4 px-4 max-w-[480px] mx-auto overflow-hidden"
+      className="relative min-h-[100vh] min-h-[100dvh] min-h-[100svh] w-full flex flex-col items-center justify-between py-4 px-4 max-w-[480px] mx-auto overflow-hidden"
       style={{
-        paddingTop: 'calc(16px + env(safe-area-inset-top, 0px))',
-        paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
+        paddingTop: 'calc(8px + env(safe-area-inset-top, 0px))',
+        paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
       }}
     >
-      {/* ONLY MAIN TEXT ON COVER: HAPPY BIRTHDAY RIYA (3D Gold Typography) */}
-      <header className="w-full text-center flex flex-col items-center pt-2 pb-1 z-20">
+      {/* Falling Flowers & Stars (Cover section: 60% count to keep card clean) */}
+      <PetalsCanvas section="cover" />
+
+      {/* ONLY MAIN TEXT ON COVER: HAPPY BIRTHDAY RIYA (3D Gold Fluid Typography) */}
+      <header className="relative z-10 w-full text-center flex flex-col items-center pt-1 pb-1 select-none shrink-0">
         <h1 className="gold-3d-title animate-gold-pulse text-center select-none flex flex-col items-center justify-center">
-          <span className="block text-[21px] min-[380px]:text-[25px] sm:text-[28px] font-['Cormorant_Garamond'] font-bold tracking-[0.22em] uppercase">
+          <span className="block fluid-h1-sub font-['Cormorant_Garamond'] font-bold uppercase">
             HAPPY BIRTHDAY
           </span>
-          <span className="block text-[36px] min-[380px]:text-[42px] sm:text-[48px] font-['Cormorant_Garamond'] font-bold tracking-[0.16em] uppercase -mt-1 sm:-mt-1.5">
+          <span className="block fluid-h1-name font-['Cormorant_Garamond'] font-bold uppercase -mt-1 sm:-mt-1.5">
             RIYA
           </span>
         </h1>
       </header>
 
       {/* HERO VISUAL: card.jpg/card.webp Container */}
-      <div className="relative w-full flex-1 flex items-center justify-center my-2 max-h-[64vh] sm:max-h-[67vh]">
+      <div className="relative z-10 w-full flex-1 min-h-0 flex items-center justify-center my-1.5 max-h-[64vh] sm:max-h-[67vh]">
         <div
           className={`relative max-h-full aspect-[682/1024] flex items-center justify-center transition-all duration-700 ${
             isOpened ? 'scale-[1.02] -translate-y-1' : 'animate-float'
           }`}
         >
-          {/* Real Photo as Hero Visual (Never cropped, feathered edges) */}
+          {/* Real Photo as Hero Visual with aspect ratio */}
           <picture className="w-full h-full block">
             <source srcSet="./assets/card.webp" type="image/webp" />
             <img
               src="./assets/card.jpg"
               alt="Birthday greeting card for Riya"
+              width="682"
+              height="1024"
               className="w-full h-full object-contain rounded-[20px] shadow-[0_16px_45px_rgba(92,58,48,0.22)] select-none pointer-events-none"
               loading="eager"
+              decoding="async"
             />
           </picture>
 
@@ -134,10 +147,10 @@ export const CoverSection: React.FC = () => {
       </div>
 
       {/* BELOW CARD: CTA Button (NO extra text or paragraphs) */}
-      <footer className="w-full flex flex-col items-center pb-2 z-20">
+      <footer className="relative z-10 w-full flex flex-col items-center pb-2 shrink-0">
         <button
           onClick={handleOpenSurprise}
-          className="relative group overflow-hidden w-full max-w-[320px] h-14 rounded-full bg-gradient-to-r from-[#F5E5B8] via-[#C9A24D] to-[#9C7424] text-[#3B2A25] font-['Jost'] font-bold text-[14px] uppercase tracking-[0.14em] shadow-[0_8px_25px_rgba(201,162,77,0.38)] active:scale-[0.98] transition-all flex items-center justify-center cursor-pointer"
+          className="relative group overflow-hidden w-full max-w-[320px] min-h-[48px] h-14 rounded-full bg-gradient-to-r from-[#F5E5B8] via-[#C9A24D] to-[#9C7424] text-[#3B2A25] font-['Jost'] font-bold text-[14px] uppercase tracking-[0.14em] shadow-[0_8px_25px_rgba(201,162,77,0.38)] active:scale-[0.97] transition-transform flex items-center justify-center cursor-pointer select-none"
         >
           {/* Button Sheen Sweep */}
           <div

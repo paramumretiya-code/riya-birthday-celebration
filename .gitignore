@@ -37,5 +37,7 @@ verify_*.png
 screenshot_*.png
 scrolled_*.png
 scrolling_*.png
+qa_screenshots/
+qa_test.cjs
 /tmp/
 

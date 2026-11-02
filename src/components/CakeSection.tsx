@@ -1,24 +1,32 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
 import { SparkleIcon, HeartIcon } from './SVGIcons';
+import { PetalsCanvas } from './PetalsCanvas';
 
 export const CakeSection: React.FC = () => {
   const [hasWished, setHasWished] = useState(false);
   const [wishCount, setWishCount] = useState(0);
 
   const handleMakeWish = () => {
-    // 1. Haptic feedback
-    if (typeof navigator !== 'undefined' && navigator.vibrate) {
-      try { navigator.vibrate(30); } catch (e) {}
+    // 1. Safe haptic feedback
+    try {
+      if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        navigator.vibrate(30);
+      }
+    } catch (e) {
+      // Ignore vibration error
     }
 
     setHasWished(true);
     setWishCount((prev) => prev + 1);
 
-    // 2. Confetti cannons from both sides (gold, blush, champagne)
+    // 2. Confetti cannons from both sides (scaled for mobile performance)
     try {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      const count = isMobile ? 38 : 70;
+
       confetti({
-        particleCount: 70,
+        particleCount: count,
         angle: 60,
         spread: 65,
         origin: { x: 0, y: 0.75 },
@@ -27,7 +35,7 @@ export const CakeSection: React.FC = () => {
       });
 
       confetti({
-        particleCount: 70,
+        particleCount: count,
         angle: 120,
         spread: 65,
         origin: { x: 1, y: 0.75 },
@@ -37,11 +45,13 @@ export const CakeSection: React.FC = () => {
 
       // Second burst
       setTimeout(() => {
+        const secondCount = isMobile ? 28 : 50;
         confetti({
-          particleCount: 50,
+          particleCount: secondCount,
           spread: 80,
           origin: { y: 0.65 },
           colors: ['#E9D08F', '#C9A24D', '#F4CFC6'],
+          disableForReducedMotion: true,
         });
       }, 350);
     } catch (e) {
@@ -57,19 +67,22 @@ export const CakeSection: React.FC = () => {
   return (
     <section
       id="cake-section"
-      className="relative min-h-[100svh] w-full flex flex-col items-center justify-between py-6 px-4 max-w-[480px] mx-auto overflow-hidden"
+      className="relative min-h-[100vh] min-h-[100dvh] min-h-[100svh] w-full flex flex-col items-center justify-between py-6 px-4 max-w-[480px] mx-auto overflow-hidden"
       style={{
         paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
       }}
     >
+      {/* Falling Flowers & Stars Animation (100% count, behind cake photo) */}
+      <PetalsCanvas section="cake" />
+
       {/* SECTION HEADER */}
-      <header className="w-full text-center flex flex-col items-center pt-2 z-20">
+      <header className="relative z-10 w-full text-center flex flex-col items-center pt-2 select-none">
         <span className="font-['Jost'] text-[11px] sm:text-[12px] uppercase tracking-[0.28em] text-[#9C7424] font-medium mb-1">
           A Sweet Celebration
         </span>
 
-        {/* Dynamic Heading */}
-        <h2 className="font-['Great_Vibes'] text-[42px] sm:text-[48px] leading-[1.15] gold-text px-2 min-h-[58px] flex items-center justify-center transition-all duration-500">
+        {/* Dynamic Heading with fluid clamp */}
+        <h2 className="font-['Great_Vibes'] fluid-cake-title leading-[1.15] gold-text px-2 min-h-[58px] flex items-center justify-center transition-all duration-500">
           {hasWished ? (
             <span className="animate-[fadeIn_0.6s_ease-out]">
               May all your wishes come true, Riya ✨
@@ -81,18 +94,21 @@ export const CakeSection: React.FC = () => {
       </header>
 
       {/* HERO VISUAL: cake.jpg/cake.webp Container (Full width, feathered edges, slow Ken Burns) */}
-      <div className="relative w-full flex-1 flex items-center justify-center my-3 max-h-[64vh] sm:max-h-[66vh]">
+      <div className="relative z-10 w-full flex-1 flex items-center justify-center my-3 max-h-[64vh] sm:max-h-[66vh]">
         <div className="relative w-full max-h-full aspect-[682/1024] flex items-center justify-center overflow-hidden rounded-[24px] shadow-[0_20px_50px_rgba(92,58,48,0.25)]">
           
-          {/* Photo with 8-10% feathered top/bottom edges & slow Ken Burns (scale 1 -> 1.04, 14s alternate) */}
+          {/* Photo with 8-10% feathered top/bottom edges & slow Ken Burns */}
           <div className="w-full h-full feather-mask overflow-hidden">
             <picture className="w-full h-full block">
               <source srcSet="./assets/cake.webp" type="image/webp" />
               <img
                 src="./assets/cake.jpg"
                 alt="Birthday Cake for Riya with golden topper and roses"
+                width="682"
+                height="1024"
                 className="w-full h-full object-cover select-none pointer-events-none animate-[kenBurns_14s_infinite_alternate_ease-in-out]"
                 loading="lazy"
+                decoding="async"
               />
             </picture>
           </div>
@@ -182,11 +198,11 @@ export const CakeSection: React.FC = () => {
       </div>
 
       {/* FOOTER & ACTIONS */}
-      <footer className="w-full flex flex-col items-center z-20 gap-3">
+      <footer className="relative z-10 w-full flex flex-col items-center gap-3">
         {/* Interaction Button: Tap to make a wish */}
         <button
           onClick={handleMakeWish}
-          className="relative group overflow-hidden w-full max-w-[320px] h-14 rounded-full bg-gradient-to-r from-[#F5E5B8] via-[#C9A24D] to-[#9C7424] text-[#3B2A25] font-['Jost'] font-bold text-[14px] uppercase tracking-[0.14em] shadow-[0_8px_25px_rgba(201,162,77,0.38)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+          className="relative group overflow-hidden w-full max-w-[320px] min-h-[48px] h-14 rounded-full bg-gradient-to-r from-[#F5E5B8] via-[#C9A24D] to-[#9C7424] text-[#3B2A25] font-['Jost'] font-bold text-[14px] uppercase tracking-[0.14em] shadow-[0_8px_25px_rgba(201,162,77,0.38)] active:scale-[0.97] transition-transform flex items-center justify-center gap-2 cursor-pointer select-none"
         >
           <div
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full animate-sheen pointer-events-none"
@@ -198,17 +214,16 @@ export const CakeSection: React.FC = () => {
         {/* Back to Cover link */}
         <button
           onClick={scrollToCover}
-          className="text-[12px] font-['Jost'] text-[#9C7424] uppercase tracking-[0.18em] hover:text-[#C9A24D] transition-colors py-1 focus:outline-none cursor-pointer"
+          className="min-h-[48px] h-12 px-6 flex items-center justify-center text-[12px] font-['Jost'] text-[#9C7424] uppercase tracking-[0.18em] hover:text-[#C9A24D] active:scale-[0.97] transition-all focus:outline-none cursor-pointer select-none"
         >
           ↑ Back to cover
         </button>
 
         {/* Final Signoff */}
-        <p className="font-['Great_Vibes'] text-[24px] sm:text-[26px] text-[#9C7424] mt-1">
+        <p className="font-['Great_Vibes'] text-[24px] sm:text-[26px] text-[#9C7424] mt-1 select-none">
           Made with love, just for you
         </p>
       </footer>
     </section>
   );
 };
-
