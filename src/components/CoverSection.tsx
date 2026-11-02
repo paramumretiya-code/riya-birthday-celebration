@@ -55,22 +55,24 @@ export const CoverSection: React.FC = () => {
       id="cover-section"
       className="relative min-h-[100svh] w-full flex flex-col items-center justify-between py-4 px-4 max-w-[480px] mx-auto overflow-hidden"
       style={{
-        paddingTop: 'calc(14px + env(safe-area-inset-top, 0px))',
-        paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+        paddingTop: 'calc(16px + env(safe-area-inset-top, 0px))',
+        paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
       }}
     >
-      {/* ABOVE CARD: Header Label + Gold Script Name */}
-      <header className="w-full text-center flex flex-col items-center pt-1 z-20">
-        <span className="font-['Jost'] text-[11px] sm:text-[12px] uppercase tracking-[0.28em] text-[#9C7424] font-medium mb-0.5">
-          A Birthday Surprise For
-        </span>
-        <h1 className="font-['Great_Vibes'] text-[44px] sm:text-[50px] leading-[1.1] gold-text">
-          Riya
+      {/* ONLY MAIN TEXT ON COVER: HAPPY BIRTHDAY RIYA (3D Gold Typography) */}
+      <header className="w-full text-center flex flex-col items-center pt-2 pb-1 z-20">
+        <h1 className="gold-3d-title animate-gold-pulse text-center select-none flex flex-col items-center justify-center">
+          <span className="block text-[21px] min-[380px]:text-[25px] sm:text-[28px] font-['Cormorant_Garamond'] font-bold tracking-[0.22em] uppercase">
+            HAPPY BIRTHDAY
+          </span>
+          <span className="block text-[36px] min-[380px]:text-[42px] sm:text-[48px] font-['Cormorant_Garamond'] font-bold tracking-[0.16em] uppercase -mt-1 sm:-mt-1.5">
+            RIYA
+          </span>
         </h1>
       </header>
 
       {/* HERO VISUAL: card.jpg/card.webp Container */}
-      <div className="relative w-full flex-1 flex items-center justify-center my-2 max-h-[62vh] sm:max-h-[65vh]">
+      <div className="relative w-full flex-1 flex items-center justify-center my-2 max-h-[64vh] sm:max-h-[67vh]">
         <div
           className={`relative max-h-full aspect-[682/1024] flex items-center justify-center transition-all duration-700 ${
             isOpened ? 'scale-[1.02] -translate-y-1' : 'animate-float'
@@ -131,28 +133,22 @@ export const CoverSection: React.FC = () => {
         </div>
       </div>
 
-      {/* BELOW CARD: CTA Pill + Small Caption */}
+      {/* BELOW CARD: CTA Button (NO extra text or paragraphs) */}
       <footer className="w-full flex flex-col items-center pb-2 z-20">
         <button
           onClick={handleOpenSurprise}
           className="relative group overflow-hidden w-full max-w-[320px] h-14 rounded-full bg-gradient-to-r from-[#F5E5B8] via-[#C9A24D] to-[#9C7424] text-[#3B2A25] font-['Jost'] font-bold text-[14px] uppercase tracking-[0.14em] shadow-[0_8px_25px_rgba(201,162,77,0.38)] active:scale-[0.98] transition-all flex items-center justify-center cursor-pointer"
         >
-          {/* Button Sheen Sweep every 4s */}
+          {/* Button Sheen Sweep */}
           <div
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full animate-sheen pointer-events-none"
             aria-hidden="true"
           />
           <span className="relative z-10 flex items-center gap-2">
-            Open your surprise
-            <span className="text-[#9C7424] text-base">✨</span>
+            OPEN YOUR SURPRISE ✨
           </span>
         </button>
-
-        <p className="mt-2 text-[11px] sm:text-[12px] font-['Jost'] text-[#9C7424]/85 tracking-[0.06em]">
-          Tap to begin music & celebration
-        </p>
       </footer>
     </section>
   );
 };
-

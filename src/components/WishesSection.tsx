@@ -1,5 +1,5 @@
 import React from 'react';
-import { CrownIcon, DownArrowIcon, HeartIcon, ButterflySVG } from './SVGIcons';
+import { CrownIcon, DownArrowIcon, ButterflySVG, SparkleIcon } from './SVGIcons';
 
 export const WishesSection: React.FC = () => {
   const scrollToCake = () => {
@@ -15,92 +15,113 @@ export const WishesSection: React.FC = () => {
   return (
     <section
       id="wishes-section"
-      className="relative min-h-[100svh] w-full flex flex-col items-center justify-between py-10 px-4 max-w-[480px] mx-auto overflow-hidden"
+      className="relative min-h-[100svh] w-full flex flex-col items-center justify-between py-12 px-5 max-w-[480px] mx-auto overflow-hidden"
     >
-      {/* Subtle Background Butterflies (Behind content, z-0) */}
+      {/* Subtle Background Floating Butterflies in Margins */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute top-[12%] -left-2 opacity-50 animate-[softFloat_5s_infinite]">
-          <ButterflySVG size={28} variant="blush" />
+        <div className="absolute top-[10%] -left-3 opacity-45 animate-[softFloat_5s_infinite]">
+          <ButterflySVG size={32} variant="blush" />
         </div>
-        <div className="absolute top-[48%] -right-2 opacity-50 animate-[softFloat_6s_1s_infinite]">
-          <ButterflySVG size={30} variant="monarch" />
+        <div className="absolute top-[42%] -right-3 opacity-45 animate-[softFloat_6s_1.2s_infinite]">
+          <ButterflySVG size={34} variant="monarch" />
+        </div>
+        <div className="absolute bottom-[22%] -left-2 opacity-40 animate-[softFloat_5.5s_0.6s_infinite]">
+          <ButterflySVG size={28} variant="blush" />
         </div>
       </div>
 
-      {/* SECTION HEADER */}
-      <header className="w-full text-center flex flex-col items-center z-10 mb-6">
-        <span className="font-['Jost'] text-[11px] sm:text-[12px] uppercase tracking-[0.28em] text-[#9C7424] font-medium mb-1">
-          With All My Love
+      {/* SECTION HEADER: Replaced with "A SPECIAL BIRTHDAY WISH FOR YOU" */}
+      <header className="w-full text-center flex flex-col items-center z-10 mb-8 pt-2">
+        <span className="font-['Jost'] text-[11px] sm:text-[12px] uppercase tracking-[0.28em] text-[#9C7424] font-semibold mb-1">
+          A SPECIAL BIRTHDAY WISH FOR YOU
         </span>
-        <h2 className="font-['Great_Vibes'] text-[46px] sm:text-[52px] leading-[1.1] gold-text">
+        <h2 className="font-['Great_Vibes'] text-[48px] sm:text-[54px] leading-[1.1] gold-3d-text animate-gold-pulse">
           Dear Riya,
         </h2>
       </header>
 
-      {/* WISHES DECKLED PAPER CARDS */}
-      <div className="w-full flex flex-col gap-4 z-10">
+      {/* WISHES WRITTEN DIRECTLY ON BACKGROUND (NO BOXES OR CARDS) */}
+      <div className="w-full flex flex-col items-center text-center z-10 space-y-7">
         
-        {/* Card 1 */}
-        <article className="deckle-card p-5 sm:p-6 text-center transform -rotate-0.5 transition-transform hover:rotate-0">
-          <div className="flex justify-center mb-2">
-            <HeartIcon className="w-3.5 h-3.5 text-[#C9A24D]" />
+        {/* PART 1: PERSONAL WISHES FROM COUSIN / FAMILY */}
+        <div className="w-full space-y-6">
+          {/* Wish Line 1 */}
+          <div className="relative px-2">
+            <p className="font-['Cormorant_Garamond'] text-[20px] sm:text-[22px] leading-[1.65] font-medium embossed-text-3d">
+              Wishing you a day filled with{' '}
+              <span className="gold-3d-text font-bold">happiness</span>,{' '}
+              <span className="gold-3d-text font-bold">love</span> and all the little moments that make life beautiful.
+            </p>
           </div>
-          <p className="font-['Cormorant_Garamond'] text-[18px] sm:text-[19px] leading-[1.6] text-[#3B2A25] font-medium">
-            Wishing you a day filled with happiness, love and all the little moments that make life beautiful.
-          </p>
-        </article>
 
-        {/* Card 2 */}
-        <article className="deckle-card p-5 sm:p-6 text-center transform rotate-0.5 transition-transform hover:rotate-0">
-          <div className="flex justify-center mb-2">
-            <HeartIcon className="w-3.5 h-3.5 text-[#C9A24D]" />
+          {/* Delicate Accent Glint */}
+          <div className="flex items-center justify-center gap-2 opacity-60" aria-hidden="true">
+            <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-[#C9A24D]" />
+            <SparkleIcon className="w-3.5 h-3.5 text-[#C9A24D]" />
+            <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-[#C9A24D]" />
           </div>
-          <p className="font-['Cormorant_Garamond'] text-[18px] sm:text-[19px] leading-[1.6] text-[#3B2A25] font-medium">
-            May every new day bring you wonderful opportunities, success and moments that make your life more beautiful.
-          </p>
-        </article>
 
-        {/* Card 3 */}
-        <article className="deckle-card p-5 sm:p-6 text-center transform -rotate-0.5 transition-transform hover:rotate-0">
-          <div className="flex justify-center mb-2">
-            <HeartIcon className="w-3.5 h-3.5 text-[#C9A24D]" />
+          {/* Wish Line 2 */}
+          <div className="relative px-2">
+            <p className="font-['Cormorant_Garamond'] text-[20px] sm:text-[22px] leading-[1.65] font-medium embossed-text-3d">
+              May every new day bring you wonderful{' '}
+              <span className="gold-3d-text font-bold">opportunities</span>,{' '}
+              <span className="gold-3d-text font-bold">success</span> and moments that make your life more beautiful.
+            </p>
           </div>
-          <p className="font-['Cormorant_Garamond'] text-[18px] sm:text-[19px] leading-[1.6] text-[#3B2A25] font-medium">
-            Keep smiling, keep growing and keep shining.
-          </p>
-        </article>
 
-        {/* Finale Line */}
-        <div className="py-2 text-center">
-          <p className="font-['Great_Vibes'] text-[34px] sm:text-[38px] leading-[1.2] text-[#B28B36] drop-shadow-sm">
-            Wishing you a truly wonderful birthday!
-          </p>
+          {/* Delicate Accent Glint */}
+          <div className="flex items-center justify-center gap-2 opacity-60" aria-hidden="true">
+            <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-[#C9A24D]" />
+            <SparkleIcon className="w-3.5 h-3.5 text-[#C9A24D]" />
+            <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-[#C9A24D]" />
+          </div>
+
+          {/* Wish Line 3 */}
+          <div className="relative px-2">
+            <p className="font-['Cormorant_Garamond'] text-[20px] sm:text-[22px] leading-[1.65] font-medium embossed-text-3d">
+              Keep <span className="gold-3d-text font-bold">smiling</span>, keep{' '}
+              <span className="gold-3d-text font-bold">growing</span> and keep{' '}
+              <span className="gold-3d-text font-bold">shining ✨</span>
+            </p>
+          </div>
+
+          {/* Finale Line */}
+          <div className="pt-2">
+            <p className="font-['Great_Vibes'] text-[36px] sm:text-[42px] leading-[1.2] gold-3d-title">
+              Wishing you a truly wonderful birthday!
+            </p>
+          </div>
         </div>
 
-        {/* Divider: gold hairline + SVG crown */}
-        <div className="flex items-center justify-center gap-3 my-2" aria-hidden="true">
-          <div className="w-16 h-[1px] bg-gradient-to-r from-transparent to-[#C9A24D]/60" />
-          <CrownIcon className="w-5 h-5 text-[#C9A24D]" />
-          <div className="w-16 h-[1px] bg-gradient-to-l from-transparent to-[#C9A24D]/60" />
+        {/* ORNATE ROYAL GOLDEN DIVIDER */}
+        <div className="flex items-center justify-center gap-3 my-4 w-full" aria-hidden="true">
+          <div className="flex-1 max-w-[80px] h-[1.5px] bg-gradient-to-r from-transparent via-[#C9A24D]/50 to-[#9C7424]" />
+          <CrownIcon className="w-6 h-6 text-[#C9A24D] drop-shadow-[0_2px_4px_rgba(201,162,77,0.45)]" />
+          <div className="flex-1 max-w-[80px] h-[1.5px] bg-gradient-to-l from-transparent via-[#C9A24D]/50 to-[#9C7424]" />
         </div>
 
-        {/* God's Blessings Card */}
-        <article className="deckle-card p-6 text-center shadow-[0_14px_40px_rgba(92,58,48,0.14)]">
-          <span className="font-['Jost'] text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#9C7424] font-semibold block mb-1">
-            Spiritual Prayer & Grace
+        {/* PART 2: GOD'S BLESSINGS FOR RIYA (Directly over background, 3D Typography) */}
+        <div className="w-full flex flex-col items-center pt-1">
+          <span className="font-['Jost'] text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#9C7424] font-semibold mb-1">
+            SPIRITUAL PRAYER & GRACE
           </span>
-          <h3 className="font-['Cormorant_Garamond'] font-semibold text-[26px] sm:text-[28px] gold-text mb-3">
+          <h3 className="font-['Cormorant_Garamond'] font-bold text-[30px] sm:text-[34px] gold-3d-title mb-3">
             God's Blessings
           </h3>
-          <p className="font-['Cormorant_Garamond'] text-[18px] sm:text-[19px] leading-[1.65] text-[#3B2A25] font-medium">
-            May God bless you with happiness, good health, peace and success. May He guide you through every journey, protect you from difficulties and fill your life with endless positivity.
+          <p className="font-['Cormorant_Garamond'] text-[19px] sm:text-[21px] leading-[1.7] font-medium embossed-text-3d max-w-[420px]">
+            May God bless you with <span className="gold-3d-text font-bold">happiness</span>,{' '}
+            <span className="gold-3d-text font-bold">good health</span>,{' '}
+            <span className="gold-3d-text font-bold">peace</span> and{' '}
+            <span className="gold-3d-text font-bold">success</span>. May He guide you through every journey, protect you from difficulties and fill your life with{' '}
+            <span className="gold-3d-text font-bold">endless positivity</span>.
           </p>
-        </article>
+        </div>
 
       </div>
 
       {/* BOTTOM ACTIONS */}
-      <footer className="w-full flex flex-col items-center pt-8 z-10 gap-3">
+      <footer className="w-full flex flex-col items-center pt-10 z-10 gap-3">
         <button
           onClick={scrollToCake}
           className="relative group overflow-hidden w-full max-w-[320px] h-14 rounded-full bg-gradient-to-r from-[#F5E5B8] via-[#C9A24D] to-[#9C7424] text-[#3B2A25] font-['Jost'] font-bold text-[14px] uppercase tracking-[0.14em] shadow-[0_8px_25px_rgba(201,162,77,0.38)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
@@ -123,4 +144,3 @@ export const WishesSection: React.FC = () => {
     </section>
   );
 };
-
