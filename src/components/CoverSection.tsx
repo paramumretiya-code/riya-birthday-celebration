@@ -155,3 +155,4 @@ export const CoverSection: React.FC = () => {
     </section>
   );
 };
+

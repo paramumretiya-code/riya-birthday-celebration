@@ -123,3 +123,4 @@ export const WishesSection: React.FC = () => {
     </section>
   );
 };
+

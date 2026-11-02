@@ -93,3 +93,4 @@ export const ButterflySVG: React.FC<{ className?: string; size?: number; variant
     </div>
   );
 };
+

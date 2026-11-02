@@ -133,3 +133,4 @@ export const PetalsCanvas: React.FC = () => {
     />
   );
 };
+

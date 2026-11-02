@@ -211,3 +211,4 @@ export const CakeSection: React.FC = () => {
     </section>
   );
 };
+
