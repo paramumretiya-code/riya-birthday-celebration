@@ -11,18 +11,26 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
   const fadeIntervalRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Official track: Birthday Wish – NMIXX
+    // Official track: BIRTHDAY WISH – HR71DP
     const audio = new Audio();
-    audio.src = './assets/nmixx-birthday-wish.m4a';
+    
+    // Check codec support: High-fidelity AAC (M4A) or MP3
+    const canPlayM4A = audio.canPlayType('audio/mp4; codecs="mp4a.40.2"');
+    audio.src = canPlayM4A !== '' ? './assets/birthday-wish-hr71dp.m4a' : './assets/birthday-wish-hr71dp.mp3';
     audio.loop = true;
     audio.preload = 'auto';
     audio.volume = 0;
     audioRef.current = audio;
 
-    // Error handling - strictly do not fall back to unrelated songs
-    audio.addEventListener('error', (e) => {
-      console.warn("Audio loading error for NMIXX - Birthday Wish:", e);
-      setIsAvailable(false);
+    // Error handling - fallback to MP3 if M4A fails
+    audio.addEventListener('error', () => {
+      if (audio.src.includes('.m4a')) {
+        audio.src = './assets/birthday-wish-hr71dp.mp3';
+        audio.load();
+      } else {
+        console.warn("Audio failed to load for HR71DP - BIRTHDAY WISH");
+        setIsAvailable(false);
+      }
     });
 
     const playWithFade = async (): Promise<boolean> => {
@@ -102,8 +110,8 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
   return (
     <button
       onClick={toggleMusic}
-      title={isPlaying ? "Pause: NMIXX – Birthday Wish" : "Play: NMIXX – Birthday Wish"}
-      aria-label="Toggle Birthday Music: NMIXX – Birthday Wish"
+      title={isPlaying ? "Pause: HR71DP – BIRTHDAY WISH" : "Play: HR71DP – BIRTHDAY WISH"}
+      aria-label="Toggle Birthday Music: HR71DP – BIRTHDAY WISH"
       className="fixed top-4 right-4 z-50 flex items-center justify-center w-11 h-11 rounded-full bg-white/85 backdrop-blur-md border border-[#C9A24D]/40 shadow-[0_4px_16px_rgba(201,162,77,0.22)] active:scale-95 transition-all text-[#9C7424] cursor-pointer"
       style={{
         top: 'calc(14px + env(safe-area-inset-top, 0px))',
