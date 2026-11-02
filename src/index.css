@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #F7EDE0;
+  --color-ivory: #FBF4EA;
+  --color-blush: #F4CFC6;
+  --color-rose: #E3A3A0;
+  --color-dusty-rose: #C97B84;
+  --color-gold: #C9A24D;
+  --color-light-gold: #E9D08F;
+  --color-deep-gold: #9C7424;
+  --color-ink: #3B2A25;
+
+  --font-script: 'Great Vibes', cursive;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-label: 'Jost', sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Gold Gradient Text */
+.gold-text {
+  background: linear-gradient(135deg, #F8E7BE 0%, #E9D08F 30%, #C9A24D 70%, #9C7424 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  font-weight: 600;
+  filter: drop-shadow(0 1px 1px rgba(156, 116, 36, 0.25));
+}
+
+.gold-text-solid {
+  color: #B28B36;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+/* Sheen sweep animation for buttons */
+@keyframes sheenSweep {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  35%, 100% { transform: translateX(250%) skewX(-20deg); }
+}
+
+.animate-sheen {
+  animation: sheenSweep 4s infinite ease-in-out;
+}
+
+/* Soft float */
+@keyframes softFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-float {
+  animation: softFloat 6s infinite ease-in-out;
+}
+
+/* Ken Burns slow photo zoom */
+@keyframes kenBurns {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.04); }
+}
+
+/* Balloons & hearts floating upwards */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.95;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-800px) scale(1.15);
+    opacity: 0;
+  }
+}
+
+/* Fade in transition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Butterfly wing flap */
+@keyframes wingFlapLeft {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(-0.2); }
+}
+
+@keyframes wingFlapRight {
+  0%, 100% { transform: scaleX(1); }
+  50% { transform: scaleX(-0.2); }
+}
+
+.flap-left {
+  transform-origin: right center;
+  animation: wingFlapLeft 0.22s infinite ease-in-out;
+}
+
+.flap-right {
+  transform-origin: left center;
+  animation: wingFlapRight 0.22s infinite ease-in-out;
+}
+
+/* Photo Feathering Mask (8-10% gradient on top & bottom) */
+.feather-mask {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 9%, black 91%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 9%, black 91%, transparent 100%);
+}
+
+/* Paper Deckle Card Styling */
+.deckle-card {
+  background: #FCF7F0;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px -6px rgba(92, 58, 48, 0.12),
+              0 3px 10px rgba(92, 58, 48, 0.05),
+              inset 0 0 0 1px rgba(255, 255, 255, 0.9),
+              inset 0 0 0 2px rgba(201, 162, 77, 0.25);
+  position: relative;
+}
+
+.deckle-card::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed rgba(201, 162, 77, 0.35);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* Paper noise overlay */
+.paper-noise {
+  background-image: radial-gradient(rgba(59, 42, 37, 0.035) 1px, transparent 0);
+  background-size: 24px 24px;
+}
