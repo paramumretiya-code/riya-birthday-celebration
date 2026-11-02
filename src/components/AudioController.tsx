@@ -11,26 +11,18 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
   const fadeIntervalRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Check localStorage preference
-    const savedState = localStorage.getItem('riya_birthday_music_pref');
-    const autoPlaySaved = savedState === 'true';
-
+    // Official track: Birthday Wish – NMIXX
     const audio = new Audio();
-    audio.src = './assets/music.mp3';
+    audio.src = './assets/nmixx-birthday-wish.m4a';
     audio.loop = true;
     audio.preload = 'auto';
     audio.volume = 0;
     audioRef.current = audio;
 
-    // Error handling
-    audio.addEventListener('error', () => {
-      // Try fallback to assets/music/happy-birthday.mp3
-      if (audio.src.includes('music.mp3')) {
-        audio.src = './assets/music/happy-birthday.mp3';
-        audio.load();
-      } else {
-        setIsAvailable(false);
-      }
+    // Error handling - strictly do not fall back to unrelated songs
+    audio.addEventListener('error', (e) => {
+      console.warn("Audio loading error for NMIXX - Birthday Wish:", e);
+      setIsAvailable(false);
     });
 
     const playWithFade = async (): Promise<boolean> => {
@@ -40,7 +32,7 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
         setIsPlaying(true);
         localStorage.setItem('riya_birthday_music_pref', 'true');
 
-        // 600ms volume fade in
+        // Smooth 600ms volume fade in
         if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
         let vol = 0;
         audioRef.current.volume = 0;
@@ -84,7 +76,7 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
       onAudioReady(playWithFade);
     }
 
-    // Expose toggle on window for global triggering
+    // Expose toggle on window for global triggering from Cover section CTA
     (window as any).__playBirthdayMusic = playWithFade;
     (window as any).__pauseBirthdayMusic = pauseWithFade;
 
@@ -94,7 +86,7 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
         audioRef.current.pause();
       }
     };
-  }, []);
+  }, [onAudioReady]);
 
   const toggleMusic = () => {
     if (!audioRef.current) return;
@@ -110,10 +102,13 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
   return (
     <button
       onClick={toggleMusic}
-      title={isPlaying ? "Mute Music" : "Play Music"}
-      aria-label="Toggle Birthday Music"
-      className="fixed top-4 right-4 z-50 flex items-center justify-center w-11 h-11 rounded-full bg-white/80 backdrop-blur-md border border-[#C9A24D]/40 shadow-[0_4px_16px_rgba(201,162,77,0.22)] active:scale-95 transition-all text-[#9C7424]"
-      style={{ top: 'calc(14px + env(safe-area-inset-top, 0px))', right: 'calc(14px + env(safe-area-inset-right, 0px))' }}
+      title={isPlaying ? "Pause: NMIXX – Birthday Wish" : "Play: NMIXX – Birthday Wish"}
+      aria-label="Toggle Birthday Music: NMIXX – Birthday Wish"
+      className="fixed top-4 right-4 z-50 flex items-center justify-center w-11 h-11 rounded-full bg-white/85 backdrop-blur-md border border-[#C9A24D]/40 shadow-[0_4px_16px_rgba(201,162,77,0.22)] active:scale-95 transition-all text-[#9C7424] cursor-pointer"
+      style={{
+        top: 'calc(14px + env(safe-area-inset-top, 0px))',
+        right: 'calc(14px + env(safe-area-inset-right, 0px))',
+      }}
     >
       {isPlaying ? (
         <div className="flex items-end gap-[2px] h-[14px]">
@@ -135,4 +130,3 @@ export const AudioController: React.FC<AudioControllerProps> = ({ onAudioReady }
     </button>
   );
 };
-
