@@ -15,21 +15,22 @@ class AudioManager {
   initAudioElement() {
     if (typeof window === 'undefined') return;
 
-    // Relative asset path ensures compatibility across Vercel, sub-paths, and local preview
-    const base = import.meta.env?.BASE_URL || './';
-    const cleanBase = base.endsWith('/') ? base : `${base}/`;
-    const musicUrl = `${cleanBase}assets/music/happy-birthday.mp3`;
+    // Robust relative and root asset paths for local preview and Vercel production
+    const sources = [
+      './assets/music/happy-birthday.mp3',
+      '/assets/music/happy-birthday.mp3'
+    ];
+    let sourceIdx = 0;
 
-    this.music = new Audio(musicUrl);
+    this.music = new Audio(sources[0]);
     this.music.loop = true;
     this.music.preload = 'auto';
     this.music.volume = 0.75;
 
-    // Fallback if origin or subpath resolution requires alternative relative format
     this.music.addEventListener('error', () => {
-      if (!this.music._retried) {
-        this.music._retried = true;
-        this.music.src = './assets/music/happy-birthday.mp3';
+      sourceIdx++;
+      if (sourceIdx < sources.length) {
+        this.music.src = sources[sourceIdx];
         this.music.load();
       }
     });

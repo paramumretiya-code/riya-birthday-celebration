@@ -1,41 +1,51 @@
-// Main Application Controller — Long-Scrolling Birthday Celebration
+// Main Application Controller — Riya's Royal 3D Birthday Celebration
 import { ParticleSystem } from './particles.js';
+import { ButterflySystem } from './butterflies.js';
 import { audioManager } from './audio.js';
 import { Cake3DScene } from './cake3d.js';
 import { fireBirthdayConfetti } from './confetti.js';
 
 class BirthdayCelebrationApp {
   constructor() {
+    this.particleSystem = null;
+    this.butterflySystem = null;
     this.cakeScene = null;
     this.sections = [];
-    this.stepItems = [];
+    this.stepButtons = [];
     this.audioBtn = null;
     this.audioStatusLabel = null;
     this.cakeEntered = false;
+    this.surpriseOpened = false;
 
     this.init();
   }
 
   init() {
-    // 1. Initialize Ambient Particles
-    new ParticleSystem('ambient-canvas');
+    // 1. Initialize Continuous Ambient Particles, Petals & Bokeh
+    this.particleSystem = new ParticleSystem('ambient-canvas');
 
-    // 2. Setup 3D Pink Cake Scene
+    // 2. Initialize Realistic 3D Butterflies
+    this.butterflySystem = new ButterflySystem('butterfly-container');
+
+    // 3. Setup 3D Cake Scene in Three.js
     this.setupCakeSection();
 
-    // 3. Setup Music & Audio Controls
+    // 4. Setup Audio & Music System
     this.setupAudio();
 
-    // 4. Setup Section 1 Parallax Tilt
-    this.setupPage1Tilt();
+    // 5. Setup Surprise Cover Opening Sequence
+    this.setupSurpriseCover();
 
-    // 5. Setup Smooth Scrolling Navigation & Stepper
+    // 6. Setup Mobile Stepper & Smooth Scrolling
     this.setupSmoothScrollNav();
 
-    // 6. Setup Scroll-Triggered Reveal Animations
+    // 7. Setup Parallax 3D Card Tilt
+    this.setupCardParallax();
+
+    // 8. Setup Scroll-Triggered Reveal Animations
     this.setupScrollReveals();
 
-    // Check URL parameters for direct section scrolling
+    // Check URL parameters for direct section scrolling if specified
     const urlParams = new URLSearchParams(window.location.search);
     const targetSection = urlParams.get('section');
     if (targetSection) {
@@ -46,9 +56,45 @@ class BirthdayCelebrationApp {
     }
   }
 
+  // Cover opening cinematic transition
+  setupSurpriseCover() {
+    const btnOpenSurprise = document.getElementById('btn-open-surprise');
+    const surpriseCover = document.getElementById('surprise-cover');
+
+    const openSurprise = async () => {
+      if (this.surpriseOpened) return;
+      this.surpriseOpened = true;
+
+      // 1. Audio chime & start background birthday music immediately
+      audioManager.playChime();
+      await audioManager.playMusic();
+
+      // 2. Cinematic transition classes
+      document.body.classList.remove('surprise-closed');
+      document.body.classList.add('surprise-opened');
+
+      // 3. Trigger initial celebratory confetti burst
+      setTimeout(() => {
+        fireBirthdayConfetti();
+      }, 700);
+    };
+
+    if (btnOpenSurprise) {
+      btnOpenSurprise.addEventListener('click', openSurprise);
+    }
+
+    if (surpriseCover) {
+      surpriseCover.addEventListener('click', (e) => {
+        if (e.target === surpriseCover) {
+          openSurprise();
+        }
+      });
+    }
+  }
+
   setupAudio() {
     this.audioBtn = document.getElementById('btn-audio-toggle');
-    this.audioStatusLabel = document.getElementById('audio-status-label') || document.querySelector('.audio-status-text');
+    this.audioStatusLabel = document.getElementById('audio-status-label');
 
     if (this.audioBtn) {
       this.audioBtn.addEventListener('click', async () => {
@@ -57,21 +103,15 @@ class BirthdayCelebrationApp {
       });
     }
 
-    // Subscribe to audio state changes
     audioManager.onStateChange((isPlaying) => {
       this.updateAudioUI(isPlaying);
     });
 
-    // "LET'S CELEBRATE ✨" button in Section 1
+    // "READ YOUR WISHES 💌" button in Section 1
     const btnToWishes = document.getElementById('btn-to-wishes');
     if (btnToWishes) {
       btnToWishes.addEventListener('click', () => {
         audioManager.playChime();
-
-        // Start background music on user action
-        audioManager.playMusic();
-
-        // Smoothly scroll down to Section 2 (Wishes)
         const wishesSection = document.getElementById('wishes-section');
         if (wishesSection) {
           wishesSection.scrollIntoView({ behavior: 'smooth' });
@@ -107,7 +147,7 @@ class BirthdayCelebrationApp {
   }
 
   setupSmoothScrollNav() {
-    this.stepItems = document.querySelectorAll('.step-item');
+    this.stepButtons = document.querySelectorAll('.step-dot-btn');
     this.sections = [
       document.getElementById('welcome-section'),
       document.getElementById('wishes-section'),
@@ -115,19 +155,19 @@ class BirthdayCelebrationApp {
     ].filter(Boolean);
 
     // Stepper item clicks
-    this.stepItems.forEach((item) => {
-      item.addEventListener('click', (e) => {
+    this.stepButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
         e.preventDefault();
-        const targetId = item.dataset.target;
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
+        const targetId = btn.dataset.target;
+        const targetEl = document.getElementById(targetId);
+        if (targetEl) {
           audioManager.playChime();
-          targetElement.scrollIntoView({ behavior: 'smooth' });
+          targetEl.scrollIntoView({ behavior: 'smooth' });
         }
       });
     });
 
-    // Section 2 Buttons
+    // Section 2 Navigation Buttons
     const btnWishesToWelcome = document.getElementById('btn-wishes-to-welcome');
     const btnWishesToCake = document.getElementById('btn-wishes-to-cake');
 
@@ -157,7 +197,7 @@ class BirthdayCelebrationApp {
       });
     }
 
-    // Brand title click scrolls to top
+    // Brand logo click scrolls to top
     const navBrand = document.getElementById('nav-brand');
     if (navBrand) {
       navBrand.addEventListener('click', (e) => {
@@ -166,18 +206,18 @@ class BirthdayCelebrationApp {
       });
     }
 
-    // ScrollSpy to update active stepper indicator
+    // ScrollSpy to update active stepper dot
     const updateActiveNav = () => {
       const scrollPos = window.scrollY + window.innerHeight * 0.35;
       this.sections.forEach((sec, idx) => {
         const top = sec.offsetTop;
         const height = sec.offsetHeight;
         if (scrollPos >= top && scrollPos < top + height) {
-          this.stepItems.forEach((item, itemIdx) => {
-            if (itemIdx === idx) {
-              item.classList.add('active');
+          this.stepButtons.forEach((btn, bIdx) => {
+            if (bIdx === idx) {
+              btn.classList.add('active');
             } else {
-              item.classList.remove('active');
+              btn.classList.remove('active');
             }
           });
 
@@ -205,21 +245,18 @@ class BirthdayCelebrationApp {
       const windowHeight = window.innerHeight;
       revealElements.forEach((el) => {
         const rect = el.getBoundingClientRect();
-        if (rect.top < windowHeight - 50 && rect.bottom > 50) {
+        if (rect.top < windowHeight - 40 && rect.bottom > 40) {
           el.classList.add('is-revealed');
         }
       });
     };
 
-    // Run check on initial mount
     checkReveals();
     requestAnimationFrame(checkReveals);
     setTimeout(checkReveals, 300);
 
-    // Also run on scroll
     window.addEventListener('scroll', checkReveals, { passive: true });
 
-    // IntersectionObserver for smooth entries
     if (window.IntersectionObserver) {
       const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -228,7 +265,6 @@ class BirthdayCelebrationApp {
           }
         });
       }, {
-        root: null,
         threshold: 0.05,
         rootMargin: '50px 0px 50px 0px'
       });
@@ -237,41 +273,29 @@ class BirthdayCelebrationApp {
     }
   }
 
-  setupPage1Tilt() {
-    const cardStage = document.querySelector('.invitation-card-stage');
+  setupCardParallax() {
+    const cardStage = document.getElementById('invitation-card-stage');
     const page1 = document.getElementById('welcome-section');
     if (!cardStage || !page1) return;
 
-    const balloons = document.querySelectorAll('.ambient-balloon');
-
-    const handleMove = (x, y) => {
+    const handleMove = (clientX, clientY) => {
       const rect = page1.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      const percentX = (x - centerX) / (rect.width / 2);
-      const percentY = (y - centerY) / (rect.height / 2);
+      const percentX = (clientX - centerX) / (rect.width / 2);
+      const percentY = (clientY - centerY) / (rect.height / 2);
 
-      // Subtle 3D tilt
-      const tiltX = -percentY * 6;
-      const tiltY = percentX * 6;
+      const tiltX = -percentY * 5.5;
+      const tiltY = percentX * 5.5;
       cardStage.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-
-      // Subtle balloon shift
-      balloons.forEach((b, i) => {
-        const factor = (i + 1) * 5;
-        b.style.transform = `translate(${percentX * factor}px, ${percentY * factor}px)`;
-      });
     };
 
-    page1.addEventListener('mousemove', (e) => {
+    page1.addEventListener('pointermove', (e) => {
       handleMove(e.clientX, e.clientY);
-    });
+    }, { passive: true });
 
-    page1.addEventListener('mouseleave', () => {
+    page1.addEventListener('pointerleave', () => {
       cardStage.style.transform = 'rotateX(0deg) rotateY(0deg)';
-      balloons.forEach((b) => {
-        b.style.transform = 'translate(0px, 0px)';
-      });
     });
   }
 
@@ -292,9 +316,14 @@ class BirthdayCelebrationApp {
 
         // Trigger cake cutting animation
         this.cakeScene.cutTheCake(() => {
-          // On cut complete:
+          // On cut completed:
           fireBirthdayConfetti();
           audioManager.playCelebration();
+
+          // Trigger realistic celebration butterflies swarm
+          if (this.butterflySystem) {
+            this.butterflySystem.triggerCelebrationSwarm();
+          }
 
           if (celebrationBox) celebrationBox.classList.add('active');
           if (btnCut) btnCut.style.display = 'none';
@@ -317,12 +346,15 @@ class BirthdayCelebrationApp {
           this.cakeScene.resetCelebration();
         }
         fireBirthdayConfetti();
+        if (this.butterflySystem) {
+          this.butterflySystem.triggerCelebrationSwarm();
+        }
       });
     }
   }
 }
 
-// Boot application
+// Boot application when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   new BirthdayCelebrationApp();
 });

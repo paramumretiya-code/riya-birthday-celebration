@@ -1,90 +1,54 @@
-/* SECTION 03 — THE MAGICAL PINK CAKE CELEBRATION */
+/* SECTION 03 — ROYAL 3D CAKE CELEBRATION */
 
-#cake-section, #page-3 {
-  background: radial-gradient(ellipse at 50% 45%, #FFFBF5 0%, #FFF2EC 45%, #F4DFDB 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  min-height: 100vh;
-  min-height: 100dvh;
-  padding-bottom: 50px;
-}
-
-/* Ambient Birthday Party Bokeh Lights */
-.cake-ambient-lights {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
-}
-
-.bokeh-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(25px);
-  opacity: 0.35;
-  animation: floatSlow 8s infinite ease-in-out;
-}
-
-.bokeh-1 { width: 220px; height: 220px; background: #FFD8A8; top: 10%; left: 8%; }
-.bokeh-2 { width: 280px; height: 280px; background: #F8DAD8; top: 20%; right: 10%; animation-delay: 2s; }
-.bokeh-3 { width: 200px; height: 200px; background: #FFE0B2; bottom: 15%; left: 15%; animation-delay: 4s; }
-.bokeh-4 { width: 240px; height: 240px; background: #F3B0B0; bottom: 20%; right: 12%; animation-delay: 1s; }
-
-/* Page 3 Header */
 .cake-header {
   text-align: center;
   z-index: 10;
-  margin-top: 10px;
+  margin-top: 4px;
+  margin-bottom: 8px;
 }
 
 .cake-subtitle {
   font-family: var(--font-sans);
-  font-size: clamp(0.65rem, 1.4vw, 0.78rem);
-  font-weight: 600;
-  letter-spacing: 0.28em;
+  font-size: clamp(0.65rem, 2vw, 0.76rem);
+  font-weight: 700;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--color-antique-gold);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .cake-main-title {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4.2vw, 3rem);
+  font-size: clamp(1.7rem, 5.4vw, 2.4rem);
   font-weight: 800;
   letter-spacing: 0.06em;
   background: var(--gold-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 10px rgba(184, 139, 66, 0.35));
+  filter: drop-shadow(0 2px 8px rgba(184, 139, 66, 0.35));
   margin: 0;
+  line-height: 1.15;
 }
 
 .cake-wish-prompt {
   font-family: var(--font-serif);
-  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-size: clamp(0.92rem, 2.6vw, 1.1rem);
   font-style: italic;
   color: var(--color-text-muted);
   margin-top: 4px;
-  transition: all 0.5s ease;
+  transition: opacity 0.4s ease;
 }
 
-/* 3D Three.js Cake Stage */
+/* 3D Cake WebGL Stage */
 .cake-stage-container {
   position: relative;
-  width: min(650px, 92vw);
-  height: clamp(280px, 46vh, 440px);
-  z-index: 5;
+  width: min(420px, 94vw);
+  height: clamp(300px, 46vh, 420px);
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 4px 0;
 }
 
 #cake-webgl-canvas {
@@ -98,154 +62,164 @@
   cursor: grabbing;
 }
 
-/* Rotate Hint */
+/* Interaction Hint Badge */
 .cake-hint {
   position: absolute;
   bottom: 0px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-family: var(--font-sans);
-  letter-spacing: 0.08em;
+  font-weight: 500;
+  letter-spacing: 0.05em;
   color: var(--color-antique-gold);
-  background: rgba(255, 255, 255, 0.75);
-  padding: 4px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(214, 173, 104, 0.25);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 4px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(214, 173, 104, 0.35);
   pointer-events: none;
-  opacity: 0.8;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(184, 139, 66, 0.1);
+  text-align: center;
 }
 
-/* Action Controls & Celebration Card */
+/* Cake Controls Panel */
 .cake-controls-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 12px;
   z-index: 20;
-  margin-bottom: 8px;
+  width: min(420px, 92vw);
+}
+
+/* Gyroscope 3D Motion Toggle Button */
+.motion-toggle-wrapper {
+  display: flex;
+  justify-content: center;
   width: 100%;
 }
 
+.btn-motion-toggle {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(214, 173, 104, 0.45);
+  color: var(--color-deep-gold);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.28s ease;
+  box-shadow: 0 2px 8px rgba(184, 139, 66, 0.12);
+}
+
+.btn-motion-toggle:active {
+  transform: scale(0.96);
+}
+
+.btn-motion-toggle.active {
+  background: var(--gold-gradient);
+  color: #382410;
+  border-color: transparent;
+  box-shadow: 0 3px 12px rgba(214, 173, 104, 0.45);
+}
+
+/* Cut Cake Action Row */
 .cake-action-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  width: 100%;
 }
 
 .btn-cut-cake {
-  padding: clamp(12px, 2vh, 16px) clamp(26px, 4vw, 36px);
-  font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+  padding: 14px 34px;
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
   animation: pulseGoldGlow 2.5s infinite ease-in-out;
 }
 
-/* Celebration Overlay Message (Reveals on Cut) */
+/* Final Celebration Message Box (Reveals on Cut) */
 .celebration-message-box {
   display: none;
   background: var(--card-bg-gradient);
   border: 1.5px solid var(--color-champagne-gold);
-  box-shadow: var(--shadow-luxury), var(--shadow-card-glow);
-  border-radius: 20px;
-  padding: clamp(16px, 2.8vh, 26px) clamp(22px, 4vw, 36px);
+  box-shadow: 0 20px 50px rgba(184, 139, 66, 0.35), 0 0 30px rgba(214, 173, 104, 0.3);
+  border-radius: 24px;
+  padding: 22px 24px;
   text-align: center;
-  max-width: min(540px, 92vw);
-  animation: revealScaleUp 0.8s var(--ease-cinematic) both;
-  margin-bottom: 12px;
+  width: 100%;
+  animation: revealScaleUp 0.7s var(--ease-spring) forwards;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .celebration-message-box.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.celebration-gold-crown {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 8px rgba(214, 173, 104, 0.5));
 }
 
 .celebration-greeting {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+  font-size: clamp(1.4rem, 4.8vw, 1.85rem);
   font-weight: 800;
+  letter-spacing: 0.08em;
   background: var(--gold-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 6px;
+  margin: 0;
+  line-height: 1.2;
 }
 
-.celebration-sweet-quote {
+.celebration-quote {
   font-family: var(--font-serif);
-  font-size: clamp(1rem, 2vw, 1.35rem);
   font-style: italic;
+  font-size: clamp(1.02rem, 3.2vw, 1.18rem);
   color: var(--color-text-dark);
-  margin-bottom: 14px;
+  line-height: 1.6;
+  margin: 4px 0 10px 0;
 }
 
-/* Bottom Nav on Page 3 */
+.btn-celebrate-again {
+  padding: 11px 26px;
+  font-size: 0.8rem;
+}
+
+/* Bottom Navigation Back */
 .cake-bottom-nav {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 10px;
+  margin-top: 4px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .cake-header {
-    margin-top: 4px;
-  }
-
-  .cake-main-title {
-    font-size: clamp(1.4rem, 5.2vw, 2.1rem);
-  }
-
-  .cake-subtitle {
-    font-size: 0.58rem;
-    letter-spacing: 0.18em;
-  }
-
-  .cake-wish-prompt {
-    font-size: 0.95rem;
-    margin-top: 2px;
-  }
-
-  .cake-stage-container {
-    height: 33vh;
-  }
-
-  .cake-hint {
-    font-size: 0.6rem;
-    padding: 2px 8px;
-    bottom: -6px;
-  }
-
-  .celebration-message-box {
-    padding: 12px 16px;
-    margin-bottom: 8px;
-  }
-
-  .celebration-greeting {
-    font-size: 1.3rem;
-  }
-
-  .celebration-sweet-quote {
-    font-size: 0.92rem;
-    margin-bottom: 8px;
-  }
-
-  .cake-bottom-nav {
-    margin-top: 6px;
-  }
+.cake-bottom-nav .btn-luxury {
+  padding: 10px 20px;
+  font-size: 0.76rem;
 }
 
-/* CSS 3D Cake Fallback (for non-WebGL / headless environments) */
+/* CSS 3D Cake Fallback (for devices without WebGL acceleration) */
 .css-cake-fallback {
-  position: absolute;
-  top: 48%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  width: 260px;
+  height: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  pointer-events: auto;
+  justify-content: flex-end;
 }
 
 .css-cake-wrapper {
   position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -253,243 +227,58 @@
 }
 
 .css-cake-tier {
+  border-radius: 12px;
+  background: linear-gradient(180deg, #FADCE2 0%, #F8BCC6 100%);
+  border: 2px solid #D6AD68;
   position: relative;
-  background: linear-gradient(180deg, #FCE3E7 0%, #F8BCC6 50%, #F2A2AE 100%);
-  border-radius: 12px 12px 0 0;
-  box-shadow: 0 4px 15px rgba(184, 139, 66, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(214, 173, 104, 0.4);
-  border-bottom: none;
+  box-shadow: 0 4px 15px rgba(184, 139, 66, 0.2);
 }
 
-.tier-top {
-  width: 140px;
-  height: 60px;
-  z-index: 3;
+.tier-top { width: 100px; height: 50px; z-index: 3; }
+.tier-middle { width: 150px; height: 60px; z-index: 2; margin-top: -6px; }
+.tier-bottom { width: 200px; height: 70px; z-index: 1; margin-top: -6px; }
+
+.css-cake-stand {
+  width: 230px;
+  height: 25px;
+  background: var(--gold-gradient);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(184, 139, 66, 0.4);
 }
 
-.tier-middle {
-  width: 200px;
-  height: 70px;
-  z-index: 2;
-  margin-top: -6px;
-}
-
-.tier-bottom {
-  width: 270px;
-  height: 80px;
-  z-index: 1;
-  margin-top: -6px;
-}
-
-.tier-frosting {
+.css-candles-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
   position: absolute;
-  top: -4px;
+  top: -24px;
   left: 0;
   width: 100%;
-  height: 12px;
-  background: #FFFDF8;
-  border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(214, 173, 104, 0.3);
-}
-
-.tier-frosting::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 5%;
-  width: 90%;
-  height: 6px;
-  background: radial-gradient(circle, #D6AD68 40%, transparent 60%);
-  background-size: 16px 8px;
-}
-
-/* Pedestal Cake Stand */
-.css-cake-stand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 0;
-  margin-top: -4px;
-}
-
-.css-stand-top {
-  width: 320px;
-  height: 12px;
-  background: var(--gold-gradient);
-  border-radius: 6px;
-  box-shadow: 0 6px 15px rgba(184, 139, 66, 0.4);
-}
-
-.css-stand-pillar {
-  width: 44px;
-  height: 48px;
-  background: linear-gradient(90deg, #C2964C 0%, #FFE8B8 50%, #B88B42 100%);
-  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.15);
-}
-
-.css-stand-base {
-  width: 180px;
-  height: 16px;
-  background: var(--gold-gradient);
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 10px 25px rgba(184, 139, 66, 0.35);
-}
-
-/* Candles & Animated Flames */
-.css-candles-row {
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 22px;
-  z-index: 10;
 }
 
 .css-candle {
-  width: 8px;
-  height: 38px;
-  background: repeating-linear-gradient(45deg, #FFF 0, #FFF 4px, #D6AD68 4px, #D6AD68 8px);
-  border-radius: 3px;
+  width: 6px;
+  height: 22px;
+  background: linear-gradient(180deg, #FFE0E5, #D6AD68);
+  border-radius: 2px;
   position: relative;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .css-flame {
+  width: 8px;
+  height: 14px;
+  background: radial-gradient(ellipse at bottom, #FFF3A8 0%, #FFA834 60%, transparent 100%);
+  border-radius: 50% 50% 20% 20%;
   position: absolute;
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%) scale(0);
-  width: 14px;
-  height: 20px;
-  background: radial-gradient(ellipse at 50% 80%, #FFFDE7 0%, #FFD54F 35%, #FF7043 80%);
-  border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
-  box-shadow: 0 0 15px #FFB74D, 0 0 25px rgba(255, 167, 38, 0.6);
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  top: -14px;
+  left: -1px;
+  opacity: 0;
+  transform: scale(0.1);
+  transition: all 0.4s ease;
 }
 
 .css-flame.lit {
-  transform: translateX(-50%) scale(1);
-  animation: flameFlicker 0.7s infinite alternate ease-in-out;
-}
-
-/* Fallback Knife */
-.css-knife {
-  position: absolute;
-  top: -120px;
-  right: -50px;
-  width: 12px;
-  height: 110px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  transform: rotate(35deg);
-  transition: all 0.4s ease;
-  z-index: 25;
-  pointer-events: none;
-}
-
-.css-knife-blade {
-  width: 14px;
-  height: 65px;
-  background: linear-gradient(135deg, #FFE8B8 0%, #D6AD68 60%, #B88B42 100%);
-  clip-path: polygon(0 0, 100% 15%, 80% 100%, 0% 100%);
-  border-radius: 2px;
-  box-shadow: 0 4px 10px rgba(184, 139, 66, 0.4);
-}
-
-.css-knife-handle {
-  width: 10px;
-  height: 45px;
-  background: linear-gradient(90deg, #B88B42, #E2BA72, #996F28);
-  border-radius: 4px;
-}
-
-/* Slicing Animation */
-.css-cake-wrapper.is-slicing .css-knife {
   opacity: 1;
-  animation: knifeCutSlice 1.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards;
-}
-
-@keyframes knifeCutSlice {
-  0% {
-    top: -120px;
-    right: -30px;
-    transform: rotate(35deg);
-    opacity: 1;
-  }
-  45% {
-    top: 40px;
-    right: 30px;
-    transform: rotate(5deg);
-    opacity: 1;
-  }
-  60% {
-    top: 70px;
-    right: 30px;
-    transform: rotate(0deg);
-    opacity: 1;
-  }
-  85% {
-    top: -80px;
-    right: -10px;
-    transform: rotate(25deg);
-    opacity: 1;
-  }
-  100% {
-    top: -120px;
-    right: -40px;
-    transform: rotate(35deg);
-    opacity: 0;
-  }
-}
-
-/* Dessert Plate with Cut Slice */
-.css-dessert-plate {
-  position: absolute;
-  bottom: -35px;
-  right: -95px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  transform: translateX(-40px) scale(0.6);
-  transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 20;
-}
-
-.css-plate-dish {
-  width: 105px;
-  height: 24px;
-  background: radial-gradient(ellipse at 50% 50%, #FFFDF8 0%, #F5EAE0 70%, #D6AD68 100%);
-  border: 1.5px solid var(--color-champagne-gold);
-  border-radius: 50%;
-  box-shadow: 0 10px 20px rgba(184, 139, 66, 0.35);
-}
-
-.css-cake-slice {
-  position: absolute;
-  top: -38px;
-  width: 60px;
-  height: 48px;
-  background: linear-gradient(135deg, #FCE3E7 0%, #F8BCC6 50%, #F2A2AE 100%);
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-  border-radius: 4px;
-  box-shadow: 0 4px 10px rgba(184, 139, 66, 0.25);
-}
-
-.slice-inner {
-  position: absolute;
-  top: 15px;
-  left: 10%;
-  width: 80%;
-  height: 6px;
-  background: #FFFDF8;
-  border-radius: 3px;
-}
-
-.css-cake-wrapper.is-cut .css-dessert-plate {
-  opacity: 1;
-  transform: translateX(0) scale(1);
+  transform: scale(1);
+  animation: flameFlicker 0.6s infinite ease-in-out;
 }

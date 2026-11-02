@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RIYA — A Day to Remember ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>HAPPY BIRTHDAY RIYA ❤️ | Royal 3D Celebration</title>
   
-  <!-- Local Luxury Typography -->
+  <!-- Self-Hosted Luxury Typography (Offline) -->
   <link rel="stylesheet" href="/fonts/fonts.css">
   
   <!-- Stylesheets -->
@@ -16,146 +16,185 @@
   <link rel="stylesheet" href="/src/styles/page2.css">
   <link rel="stylesheet" href="/src/styles/page3.css">
 </head>
-<body>
+<body class="surprise-closed">
 
-  <!-- Ambient Sparkling Particle Canvas in Background -->
+  <!-- ============================================== -->
+  <!-- CONTINUOUS LUXURY AMBIENT BACKGROUND SYSTEM    -->
+  <!-- ============================================== -->
+  <!-- Ambient Golden Bokeh, Drifting Rose Petals & Sparkling Stardust -->
   <canvas id="ambient-canvas"></canvas>
 
-  <!-- Fixed Top Luxury Header Navigation -->
+  <!-- Realistic Flying 3D Butterflies Container -->
+  <div id="butterfly-container" class="butterfly-container" aria-hidden="true"></div>
+
+  <!-- Decorative Botanical & Golden Ribbon Margins (Seamless across sections) -->
+  <div class="continuous-side-decorations" aria-hidden="true">
+    <div class="side-garland side-garland-left"></div>
+    <div class="side-garland side-garland-right"></div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- SLEEK MOBILE-FIRST HEADER NAVIGATION           -->
+  <!-- ============================================== -->
   <header class="app-header">
-    <a href="#welcome-section" class="brand-title" id="nav-brand">
-      <span class="brand-main-text">RIYA</span><span class="brand-sub-text"> — A DAY TO REMEMBER</span> <span class="brand-heart">❤️</span>
+    <a href="#welcome-section" class="brand-title" id="nav-brand" aria-label="Riya Birthday Celebration">
+      <span class="brand-name">RIYA</span>
+      <span class="brand-heart">❤️</span>
     </a>
 
-    <!-- Floating Navigation Indicator / Stepper -->
-    <nav class="progress-stepper" aria-label="Celebration Sections">
-      <a href="#welcome-section" class="step-item active" data-target="welcome-section" aria-label="Section 1: Welcome">
-        <span class="step-dot"></span>
-        <span class="step-text">01 Welcome</span>
+    <!-- Compact Mobile Section Stepper -->
+    <nav class="mobile-section-stepper" aria-label="Celebration Sections">
+      <a href="#welcome-section" class="step-dot-btn active" data-target="welcome-section" title="Section 1: Grand Welcome" aria-label="Section 1">
+        <span class="step-num">01</span>
       </a>
-      <a href="#wishes-section" class="step-item" data-target="wishes-section" aria-label="Section 2: Wishes">
-        <span class="step-dot"></span>
-        <span class="step-text">02 Wishes</span>
+      <span class="step-connector"></span>
+      <a href="#wishes-section" class="step-dot-btn" data-target="wishes-section" title="Section 2: Wishes & Blessings" aria-label="Section 2">
+        <span class="step-num">02</span>
       </a>
-      <a href="#cake-section" class="step-item" data-target="cake-section" aria-label="Section 3: Cake Celebration">
-        <span class="step-dot"></span>
-        <span class="step-text">03 Celebration</span>
+      <span class="step-connector"></span>
+      <a href="#cake-section" class="step-dot-btn" data-target="cake-section" title="Section 3: Royal 3D Cake" aria-label="Section 3">
+        <span class="step-num">03</span>
       </a>
     </nav>
 
-    <!-- Music Toggle Button with Live Equalizer & Status Indicator -->
+    <!-- Floating Luxury Music Controller -->
     <button class="audio-toggle-btn" id="btn-audio-toggle" title="Toggle Birthday Music" aria-label="Toggle Birthday Music">
       <div class="audio-equalizer" aria-hidden="true">
         <span></span><span></span><span></span><span></span>
       </div>
-      <div class="audio-status-pill">
-        <span class="audio-status-dot"></span>
-        <span class="audio-status-text" id="audio-status-label">MUSIC OFF</span>
-      </div>
+      <span class="audio-status-label" id="audio-status-label">MUSIC OFF</span>
     </button>
   </header>
 
-  <!-- Continuous Long-Scrolling Main Container -->
-  <main class="celebration-main-wrapper">
-
-    <!-- ============================================== -->
-    <!-- SECTION 01 — GRAND BIRTHDAY WELCOME            -->
-    <!-- ============================================== -->
-    <section class="celebration-section" id="welcome-section" aria-label="Grand Birthday Welcome">
-      <div class="page-1-container">
-        
-        <!-- Floating Ambient 3D Balloons -->
-        <div class="floating-balloons-layer" aria-hidden="true">
-          <div class="ambient-balloon balloon-tr" title="Champagne Balloon"></div>
-          <div class="ambient-balloon balloon-ml" title="Blush Pink Balloon"></div>
-          <div class="ambient-balloon balloon-bl" title="Ivory Balloon"></div>
-          <div class="ambient-balloon balloon-br" title="Rose Gold Balloon"></div>
-
-          <!-- Sparkling Golden Stars -->
-          <div class="sparkle-star star-1">✦</div>
-          <div class="sparkle-star star-2">★</div>
-          <div class="sparkle-star star-3">✦</div>
-          <div class="sparkle-star star-4">★</div>
+  <!-- ============================================== -->
+  <!-- INITIAL ROYAL SURPRISE COVER OVERLAY           -->
+  <!-- ============================================== -->
+  <div class="royal-surprise-cover" id="surprise-cover">
+    <div class="cover-card-wrapper">
+      <div class="cover-card-inner">
+        <!-- Golden Decorative Crest -->
+        <div class="royal-crest" aria-hidden="true">
+          <span class="crest-sparkle">✦</span>
+          <span class="crest-monogram">R</span>
+          <span class="crest-sparkle">✦</span>
         </div>
 
-        <!-- 3D Interactive Invitation Card -->
-        <div class="invitation-card-stage">
-          <article class="invitation-card">
-            <!-- Exact Reference Image -->
+        <p class="cover-eyebrow">A Bespoke Celebration For</p>
+        <h1 class="cover-name-title">DEAR RIYA <span class="cover-heart">❤️</span></h1>
+        <p class="cover-tagline">Step into your royal 3D birthday experience</p>
+
+        <!-- Primary Surprise Trigger CTA -->
+        <button class="btn-luxury btn-open-surprise" id="btn-open-surprise">
+          <span>OPEN YOUR SURPRISE ✨</span>
+        </button>
+        <p class="cover-tap-hint">🎵 Includes celebration music & 3D surprises</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- CONTINUOUS LONG-SCROLLING EXPERIENCE           -->
+  <!-- ============================================== -->
+  <main class="celebration-main-wrapper" id="celebration-wrapper">
+
+    <!-- ============================================== -->
+    <!-- SECTION 01 — GRAND BIRTHDAY INTRODUCTION       -->
+    <!-- ============================================== -->
+    <section class="celebration-section" id="welcome-section" aria-label="Grand Birthday Introduction">
+      
+      <!-- Section Content Container -->
+      <div class="page-1-container">
+
+        <!-- 3D Mobile Presentation Card Stage -->
+        <div class="invitation-card-stage" id="invitation-card-stage">
+          <article class="invitation-card" id="invitation-card">
+            
+            <!-- Reference Visual Base Layer -->
             <img 
               class="card-image-base" 
               src="/assets/reference_invitation.jpeg" 
-              alt="Riya's Elegant Birthday Invitation" 
+              alt="Riya's Luxury Birthday Celebration Visual Identity" 
+              loading="eager"
             />
             
-            <!-- Subtle Golden Sheen Light Sweep -->
-            <div class="card-gold-sheen"></div>
+            <!-- Sweeping Golden Light Sheen -->
+            <div class="card-gold-sheen" aria-hidden="true"></div>
 
-            <!-- Personalized Overlay: RIYA ❤️ -->
-            <div class="card-personalization-layer">
-              <!-- Golden filigree divider -->
-              <div class="gold-filigree-divider">
-                <span class="filigree-line"></span>
-                <span class="filigree-sparkle">✦</span>
-                <span class="filigree-line"></span>
+            <!-- Animated Flowers Blooming Layer -->
+            <div class="card-blooming-flowers" id="blooming-flowers" aria-hidden="true">
+              <div class="flower-bloom flower-tl"></div>
+              <div class="flower-bloom flower-br"></div>
+            </div>
+
+            <!-- Personalized Cinematic Typography Reveal Layer -->
+            <div class="card-typography-layer" id="card-typography">
+              
+              <!-- HAPPY (Letter by letter reveal in elegant serif) -->
+              <div class="heading-happy" id="heading-happy" aria-label="HAPPY">
+                <span class="letter">H</span>
+                <span class="letter">A</span>
+                <span class="letter">P</span>
+                <span class="letter">P</span>
+                <span class="letter">Y</span>
               </div>
 
-              <!-- RIYA Name Heading -->
-              <h1 class="riya-name-heading">
-                RIYA <span class="riya-heart">❤️</span>
-              </h1>
+              <!-- BIRTHDAY (Handwriting calligraphy reveal in Great Vibes) -->
+              <div class="heading-birthday" id="heading-birthday">
+                <span class="birthday-text">Birthday</span>
+              </div>
 
-              <!-- Subtitle -->
-              <p class="riya-subtitle">
+              <!-- RIYA (Large luxurious 3D metallic golden typography) -->
+              <div class="heading-riya-3d" id="heading-riya">
+                <span class="riya-gold-text">RIYA</span>
+                <span class="riya-heart">❤️</span>
+              </div>
+
+              <!-- Subtitle & Dedication -->
+              <p class="riya-subtitle" id="riya-subtitle">
                 A DAY TO REMEMBER • FOREVER SPECIAL
               </p>
 
-              <!-- Primary Celebration CTA -->
-              <div class="card-cta-container">
+              <!-- CTA to proceed to wishes -->
+              <div class="card-cta-row">
                 <button class="btn-luxury btn-celebrate" id="btn-to-wishes">
-                  <span>LET'S CELEBRATE ✨</span>
+                  <span>READ YOUR WISHES 💌</span>
                 </button>
               </div>
+
             </div>
           </article>
         </div>
 
       </div>
 
-      <!-- Small Scroll-Down Indicator -->
-      <div class="scroll-down-indicator" id="scroll-down-prompt" role="button" tabindex="0" aria-label="Scroll to explore wishes">
-        <span>Scroll to Explore</span>
+      <!-- Animated Scroll-Down Indicator -->
+      <div class="scroll-down-indicator" id="scroll-down-prompt" role="button" tabindex="0" aria-label="Scroll down to explore wishes">
+        <span class="scroll-text">Scroll to Explore</span>
         <span class="scroll-arrow-anim">↓</span>
       </div>
+
     </section>
 
-    <!-- Luxury Section Gold Divider -->
-    <div class="section-gold-divider" aria-hidden="true">
-      <span class="div-line"></span>
-      <span class="div-star">✦</span>
-      <span class="div-line"></span>
-    </div>
-
     <!-- ============================================== -->
-    <!-- SECTION 02 — WISHES & GOD'S BLESSINGS          -->
+    <!-- SECTION 02 — PERSONAL WISHES & GOD'S BLESSINGS -->
     <!-- ============================================== -->
-    <section class="celebration-section" id="wishes-section" aria-label="Birthday Wishes and God's Blessings">
+    <section class="celebration-section" id="wishes-section" aria-label="Personal Wishes & God's Blessings">
       <div class="page-2-wrapper">
         
         <!-- Header -->
         <div class="wishes-header reveal-on-scroll">
-          <p class="wishes-subtitle">A Lifetime of Love & Blessings For</p>
+          <p class="wishes-subtitle">With Warmest Thoughts & Affection</p>
           <h2 class="wishes-main-title">
-            Dear RIYA <span class="riya-heart">❤️</span>
+            For Dear RIYA <span class="riya-heart">❤️</span>
           </h2>
         </div>
 
-        <!-- Wishes Cards Grid -->
-        <div class="wishes-cards-grid">
+        <!-- Wishes Stack (Mobile-First Stacked Layout) -->
+        <div class="wishes-cards-stack">
           
-          <!-- CARD 1 — FROM MY HEART -->
-          <div class="wish-card reveal-on-scroll delay-1">
-            <!-- Floral Corner Ornaments -->
+          <!-- CARD 1 — A WISH FROM MY HEART -->
+          <article class="wish-card reveal-on-scroll delay-1" id="card-heart-wish">
+            <!-- Ornate Floral Corners -->
             <svg class="card-floral-corner corner-tl" viewBox="0 0 50 50" fill="none" aria-hidden="true">
               <path d="M5 45 C5 20, 20 5, 45 5" stroke="#D6AD68" stroke-width="1.5" stroke-dasharray="2 2"/>
               <path d="M12 40 C12 25, 25 12, 40 12" stroke="#E9B8B5" stroke-width="1"/>
@@ -179,26 +218,22 @@
             <!-- Card Header -->
             <div class="card-top-badge">
               <span class="wax-seal-icon">💌</span>
-              <h3 class="card-title">A Little Wish From Me</h3>
+              <h3 class="card-title">A WISH FROM MY HEART ❤️</h3>
             </div>
 
-            <!-- Message Body -->
+            <!-- Exact Message Body -->
             <div class="card-message">
-              <p>Dear Riya,</p>
-              <p>You are more than just a sister; you are one of the most precious parts of my life.</p>
-              <p>May your smile never fade, your dreams become reality, and every new chapter of your life bring happiness, success, and beautiful memories.</p>
-              <p>Always keep shining and stay the wonderful person you are.</p>
-              <p class="card-highlight">Happy Birthday, RIYA! ❤️</p>
+              <p class="salutation">Dear Riya,</p>
+              <p>Wishing you a birthday filled with happiness, beautiful memories and countless reasons to smile.</p>
+              <p>May every new day bring you wonderful opportunities, success and moments that make your life more beautiful.</p>
+              <p>Keep smiling, keep growing and keep shining.</p>
+              <p class="card-signature-line">Wishing you a truly wonderful birthday!</p>
             </div>
-
-            <div class="card-closing">
-              Always by your side
-            </div>
-          </div>
+          </article>
 
           <!-- CARD 2 — GOD'S BLESSINGS -->
-          <div class="wish-card reveal-on-scroll delay-2">
-            <!-- Floral Corner Ornaments -->
+          <article class="wish-card reveal-on-scroll delay-2" id="card-gods-blessings">
+            <!-- Ornate Floral Corners -->
             <svg class="card-floral-corner corner-tl" viewBox="0 0 50 50" fill="none" aria-hidden="true">
               <path d="M5 45 C5 20, 20 5, 45 5" stroke="#D6AD68" stroke-width="1.5" stroke-dasharray="2 2"/>
               <path d="M12 40 C12 25, 25 12, 40 12" stroke="#E9B8B5" stroke-width="1"/>
@@ -222,28 +257,24 @@
             <!-- Card Header -->
             <div class="card-top-badge">
               <span class="wax-seal-icon">✨</span>
-              <h3 class="card-title">May God Bless You ✨</h3>
+              <h3 class="card-title">GOD'S BLESSINGS ✨</h3>
             </div>
 
-            <!-- Message Body -->
+            <!-- Exact Message Body -->
             <div class="card-message">
-              <p>May God always guide your path, protect you from every difficulty, and fill your life with endless happiness, good health, peace, and success.</p>
-              <p>May every prayer in your heart find its way to a beautiful answer.</p>
-              <p>May your future be brighter than your dreams.</p>
-              <p class="card-highlight">God bless you always, RIYA. ❤️</p>
+              <p>May God bless you with happiness, good health, peace and success.</p>
+              <p>May He guide you through every journey, protect you from difficulties and fill your life with endless positivity.</p>
+              <p>May all your beautiful dreams come true and may your life always be surrounded by love and blessings.</p>
+              <p class="card-signature-line">God bless you always, Riya!</p>
             </div>
-
-            <div class="card-closing">
-              Forever in our prayers
-            </div>
-          </div>
+          </article>
 
         </div>
 
         <!-- Navigation Buttons -->
         <div class="wishes-nav-row reveal-on-scroll delay-3">
           <button class="btn-luxury btn-luxury-outline" id="btn-wishes-to-welcome">
-            ↑ WELCOME
+            ↑ COVER
           </button>
           <button class="btn-luxury" id="btn-wishes-to-cake">
             NEXT SURPRISE 🎂 ↓
@@ -253,57 +284,50 @@
       </div>
     </section>
 
-    <!-- Luxury Section Gold Divider -->
-    <div class="section-gold-divider" aria-hidden="true">
-      <span class="div-line"></span>
-      <span class="div-star">✦</span>
-      <span class="div-line"></span>
-    </div>
-
     <!-- ============================================== -->
-    <!-- SECTION 03 — 3D PINK CAKE CELEBRATION          -->
+    <!-- SECTION 03 — ROYAL 3D CAKE CELEBRATION         -->
     <!-- ============================================== -->
-    <section class="celebration-section" id="cake-section" aria-label="3D Pink Cake Celebration">
+    <section class="celebration-section" id="cake-section" aria-label="Royal 3D Cake Celebration">
       
-      <!-- Ambient Bokeh Lights -->
-      <div class="cake-ambient-lights" aria-hidden="true">
-        <div class="bokeh-orb bokeh-1"></div>
-        <div class="bokeh-orb bokeh-2"></div>
-        <div class="bokeh-orb bokeh-3"></div>
-        <div class="bokeh-orb bokeh-4"></div>
-      </div>
-
-      <!-- Header -->
+      <!-- Section Header -->
       <div class="cake-header reveal-on-scroll">
-        <p class="cake-subtitle">A MAGICAL SWEET CELEBRATION</p>
-        <h2 class="cake-main-title">IT'S CAKE TIME, RIYA! 🎂</h2>
-        <p class="cake-wish-prompt">Make a Wish, RIYA! ✨</p>
+        <p class="cake-subtitle">THE SWEETEST MOMENT OF ALL</p>
+        <h2 class="cake-main-title">MAKE A WISH, RIYA! 🎂</h2>
+        <p class="cake-wish-prompt">Watch the glowing candles & celebrate your special day ✨</p>
       </div>
 
-      <!-- 3D Three.js Realistic Pink Cake Stage -->
+      <!-- 3D Three.js Realistic Cake Stage -->
       <div class="cake-stage-container reveal-on-scroll delay-1" id="cake-stage-container">
         <canvas id="cake-webgl-canvas"></canvas>
-        <div class="cake-hint">💡 Drag with finger or mouse to rotate cake in 3D</div>
+        <div class="cake-hint" id="cake-hint">💡 Drag with finger to rotate in 3D • Tilt phone to inspect</div>
       </div>
 
-      <!-- Action Controls & Celebration Card -->
+      <!-- Motion & Cake Controls -->
       <div class="cake-controls-panel reveal-on-scroll delay-2">
         
-        <!-- Final Celebration Card (Reveals on cut) -->
-        <div class="celebration-message-box" id="celebration-message-box">
-          <h3 class="celebration-greeting">Happy Birthday, RIYA! ❤️</h3>
-          <p class="celebration-sweet-quote">
-            “May your life always be as sweet as this cake!”
-          </p>
-          <button class="btn-luxury" id="btn-celebrate-again">
-            CELEBRATE AGAIN ✨
+        <!-- Enable 3D Motion Gyroscope Button -->
+        <div class="motion-toggle-wrapper">
+          <button class="btn-motion-toggle" id="btn-enable-motion" aria-label="Enable 3D Motion Orientation">
+            <span>ENABLE 3D MOTION 📱</span>
           </button>
         </div>
 
         <!-- Cut Cake Trigger Button -->
-        <div class="cake-action-row">
+        <div class="cake-action-row" id="cake-action-row">
           <button class="btn-luxury btn-cut-cake" id="btn-cut-cake">
-            CUT THE CAKE 🎂
+            <span>CUT THE CAKE 🎂</span>
+          </button>
+        </div>
+
+        <!-- Final Celebration Card (Reveals upon cutting) -->
+        <div class="celebration-message-box" id="celebration-message-box">
+          <div class="celebration-gold-crown">👑</div>
+          <h3 class="celebration-greeting">HAPPY BIRTHDAY RIYA ❤️</h3>
+          <p class="celebration-quote">
+            “May your life always be filled with happiness, love and beautiful memories.”
+          </p>
+          <button class="btn-luxury btn-celebrate-again" id="btn-celebrate-again">
+            <span>CELEBRATE AGAIN ✨</span>
           </button>
         </div>
 
@@ -320,7 +344,7 @@
 
   </main>
 
-  <!-- Main ES Module Script -->
+  <!-- Main ES Module Application Script -->
   <script type="module" src="/src/scripts/main.js"></script>
 </body>
 </html>
